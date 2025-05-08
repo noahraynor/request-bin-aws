@@ -1,0 +1,2 @@
+# request-bin
+Capstone group project on creating a RequestBin to receive requests from github webhooks.
