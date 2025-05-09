@@ -1,0 +1,35 @@
+{
+  "name": "request-bin",
+  "version": "1.0.0",
+  "description": "Capstone request bin project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc",
+    "dev": "ts-node-dev index.ts",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexHarnett1/request-bin.git"
+  },
+  "author": "Alex, Josh, Justin, Noah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexHarnett1/request-bin/issues"
+  },
+  "homepage": "https://github.com/AlexHarnett1/request-bin#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.26.0",
+    "@stylistic/eslint-plugin": "^4.2.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/express": "^5.0.1",
+    "eslint": "^9.26.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.32.0"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
