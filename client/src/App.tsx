@@ -7,13 +7,7 @@ function NewTub() {
     <div>
       <h1>New Tubs</h1>
       <p>Create a new tub to collect and inspect HTTP requests</p>
-      <form>
-        <div>
-          <label><span>https://rbaskets.in/</span></label>
-          <input type="text" placeholder="type a name"/>
-        </div>
-        <button type="submit">Create</button>
-      </form>
+        <button type="submit">Create Tub</button>
     </div>
   )
 }
