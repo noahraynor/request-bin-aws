@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import './App.css'
+import tubsData from './data/tubs.json'
 
-// new tub component
-  // 
 function NewTub() {
   return (
     <div>
@@ -20,11 +19,26 @@ function NewTub() {
 }
 
 // my tubs component
+function MyTubs() {
+  const myTubs = tubsData.tubs
+  return (
+    <div>
+      <div>My Tubs:</div>
+      <div>
+        <ul id="baskets">
+          {myTubs.map(tub => <li key={tub.encodedUrl}>{tub.encodedUrl}</li>)}
+        </ul>
+      </div>
+    </div>
+  )
+}
+
 
 function App() {
   return (
     <>
       <NewTub />
+      <MyTubs />
     </>
   )
 }
