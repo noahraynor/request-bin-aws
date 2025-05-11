@@ -15,7 +15,6 @@ function NewTub() {
   )
 }
 
-// my tubs component
 function MyTubs() {
   const myTubs = tubsData.tubs
   return (
@@ -46,23 +45,43 @@ function RequestHeader() {
 }
 
 function Request({request}) {
+  const methodClass = `method-${request.method.toLowerCase()}`
 
-    return (
+  return (
+    <div>
+        <div class={`request ${methodClass}`}>METHOD: {request.method}</div>
+        <div>TIME: {request.time}</div>
+        <div>DATE: {request.date}</div>
         <div>
-            <p>METHOD: {request.method}</p>
-            <p>TIME: {request.time}</p>
-            <p>DATE: {request.date}</p>
-            <p>HEADERS</p>
+          <ToggleInfo title="Headers">
             <p>{JSON.stringify(request.headers)}</p>
-            <p>BODY</p>
-            <p>{JSON.stringify(request.body)}</p>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
+          </ToggleInfo>
         </div>
-        
-    )
+        <div>
+          <ToggleInfo title="Body">
+            <p>{JSON.stringify(request.body)}</p>
+          </ToggleInfo>
+        </div>
+
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+    </div>
+  )
+}
+
+function ToggleInfo({ title, children }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="toggle-container">
+      <button onClick={() => setIsOpen(!isOpen)} className="toggle-button">
+        {isOpen ? '▼' : '▶'} {title}
+      </button>
+      {isOpen && <div className="toggle-content">{children}</div>}
+    </div>
+  );
 }
 
 function App() {
