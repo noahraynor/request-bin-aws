@@ -1,29 +1,29 @@
 # === Node and build output (client + server) ===
-node_modules/                 # Don't track dependencies
-dist/                         # Ignore build output (used by Vite or tsc)
+node_modules/
+dist/
 build/
 
 # === Logs ===
-*.log                         # Don't track log files (e.g., error logs)
+*.log
 npm-debug.log*
 
 # === OS + Editor cruft ===
-.DS_Store                     # macOS system file
-Thumbs.db                     # Windows
-.vscode/                      # VSCode config (optional to ignore)
-.idea/                        # JetBrains (e.g., WebStorm)
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
 
 # === Environment files ===
-client/.env                   # Frontend secrets (VITE_API_URL etc.)
-server/.env                   # Backend secrets (DB credentials, API keys)
+client/.env
+server/.env
 
 # === TypeScript ===
-*.tsbuildinfo                 # Cache files from TypeScript
+*.tsbuildinfo
 client/tsconfig.tsbuildinfo
 server/tsconfig.tsbuildinfo
 
 # === Optional: test coverage ===
-coverage/                     # If using test coverage tools like Jest
+coverage/
 
 # === Optional: Mongo or Postgres dump files ===
 *.dump
