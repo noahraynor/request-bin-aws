@@ -66,3 +66,52 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.request {
+  font-family: monospace;
+  padding: 4px 8px;
+  margin: 4px 0;
+  border-radius: 4px;
+  display: inline-block;
+  color: white;
+}
+
+.method-get {
+  background-color: #2d8fdd;
+}
+
+.method-post {
+  background-color: #28a745;
+}
+
+.method-put {
+  background-color: #ffc107;
+  color: black;
+}
+
+.method-delete {
+  background-color: #dc3545;
+}
+
+.toggle-container {
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  /* max-width: 400px; */
+}
+
+.toggle-button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.toggle-content {
+  margin-top: 10px;
+  padding-left: 20px;
+}

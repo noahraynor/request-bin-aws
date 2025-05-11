@@ -43,7 +43,7 @@
     },
     {
         "request_id": "2",
-        "method": "POST",
+        "method": "GET",
         "headers": {
           "Accept": "*/*",
           "Content-Length": "8141",
@@ -278,6 +278,88 @@
             "modified": []
           }
         }
+    },
+    {
+      "request_id": "3",
+      "method": "PUT",
+      "headers": {
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate",
+        "Baggage": "sentry-trace_id=497a1ad6d72542c68d25e2081d310afc,sentry-sample_rate=0.0001,sentry-sampled=false,sentry-environment=production,sentry-public_key=ecd2cbf917454e9daa40541c86d0cabf,sentry-transaction=Webhook%3A%3ADeliveryJob",
+        "Connection": "close",
+        "Content-Length": "2909",
+        "Content-Type": "application/json",
+        "Sentry-Trace": "497a1ad6d72542c68d25e2081d310afc-225ce1b775fa4042-0",
+        "Traceparent": "00-b3c908bbcba07359f4995d0daaa2bb1a-671ded000d5bc736-00",
+        "User-Agent": "Basecamp3 Webhook",
+        "X-Country": "US",
+        "X-Forwarded-For": "204.62.114.248",
+        "X-Real-Ip": "204.62.114.248",
+        "X-Request-Id": "fc9fd0f4-3f13-433f-8990-58d2843b5eb8"
+      },
+      "time": "12:30:53",
+      "date": "2025-05-09",
+      "body": {
+        "id": 14156054577,
+        "kind": "document_trashed",
+        "details": {
+          "status_was": "active"
+        },
+        "created_at": "2025-05-09T12:30:53.678-07:00",
+        "recording": {
+          "id": 8634335673,
+          "status": "trashed",
+          "visible_to_clients": false,
+          "created_at": "2025-05-09T12:30:18.279-07:00",
+          "updated_at": "2025-05-09T12:30:53.673-07:00",
+          "title": "This is a new document",
+          "inherits_status": false,
+          "type": "Document",
+          "url": "https://3.basecampapi.com/3695031/buckets/42219900/documents/8634335673.json",
+          "app_url": "https://3.basecamp.com/3695031/buckets/42219900/documents/8634335673"
+        }
       }
+    },
+    {
+      "request_id": "4",
+      "method": "DELETE",
+      "headers": {
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate",
+        "Baggage": "sentry-trace_id=497a1ad6d72542c68d25e2081d310afc,sentry-sample_rate=0.0001,sentry-sampled=false,sentry-environment=production,sentry-public_key=ecd2cbf917454e9daa40541c86d0cabf,sentry-transaction=Webhook%3A%3ADeliveryJob",
+        "Connection": "close",
+        "Content-Length": "2909",
+        "Content-Type": "application/json",
+        "Sentry-Trace": "497a1ad6d72542c68d25e2081d310afc-225ce1b775fa4042-0",
+        "Traceparent": "00-b3c908bbcba07359f4995d0daaa2bb1a-671ded000d5bc736-00",
+        "User-Agent": "Basecamp3 Webhook",
+        "X-Country": "US",
+        "X-Forwarded-For": "204.62.114.248",
+        "X-Real-Ip": "204.62.114.248",
+        "X-Request-Id": "fc9fd0f4-3f13-433f-8990-58d2843b5eb8"
+      },
+      "time": "12:30:53",
+      "date": "2025-05-09",
+      "body": {
+        "id": 14156054577,
+        "kind": "document_trashed",
+        "details": {
+          "status_was": "active"
+        },
+        "created_at": "2025-05-09T12:30:53.678-07:00",
+        "recording": {
+          "id": 8634335673,
+          "status": "trashed",
+          "visible_to_clients": false,
+          "created_at": "2025-05-09T12:30:18.279-07:00",
+          "updated_at": "2025-05-09T12:30:53.673-07:00",
+          "title": "This is a new document",
+          "inherits_status": false,
+          "type": "Document",
+          "url": "https://3.basecampapi.com/3695031/buckets/42219900/documents/8634335673.json",
+          "app_url": "https://3.basecamp.com/3695031/buckets/42219900/documents/8634335673"
+        }
+      }
+    }
   ]}
   
