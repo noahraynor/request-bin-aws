@@ -54,20 +54,15 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.request {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 25px;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
-.request {
+.method {
   font-family: monospace;
   padding: 4px 8px;
   margin: 4px 0;
@@ -76,20 +71,20 @@ button:focus-visible {
   color: white;
 }
 
-.method-get {
+.get {
   background-color: #2d8fdd;
 }
 
-.method-post {
+.post {
   background-color: #28a745;
 }
 
-.method-put {
+.put {
   background-color: #ffc107;
   color: black;
 }
 
-.method-delete {
+.delete {
   background-color: #dc3545;
 }
 

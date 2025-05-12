@@ -1,9 +1,10 @@
 import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import './App.css'
 import tubsData from './data/tubs.json'
 import requestsData from './data/requests.json'
 
-const showHomepage = true
+const showHomepage = false
 
 function NewTub() {
   return (
@@ -45,11 +46,11 @@ function RequestHeader() {
 }
 
 function Request({request}) {
-  const methodClass = `method-${request.method.toLowerCase()}`
+  const methodClass = `${request.method.toLowerCase()}`
 
   return (
-    <div>
-        <div className={`request ${methodClass}`}>METHOD: {request.method}</div>
+    <div className={"request"}>
+        <div className={`method ${methodClass}`}>METHOD: {request.method}</div>
         <div>TIME: {request.time}</div>
         <div>DATE: {request.date}</div>
         <div>
@@ -62,11 +63,6 @@ function Request({request}) {
             <p>{JSON.stringify(request.body)}</p>
           </ToggleInfo>
         </div>
-
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
     </div>
   )
 }
