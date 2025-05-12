@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import './App.css'
 import tubImg from './assets/requestTub.png'
 import tubsData from './data/tubs.json'
 import requestsData from './data/requests.json'
+import tubService from './services/tubService'
 
 // const showHomepage = false
 
@@ -112,6 +113,17 @@ function ToggleInfo({ title, children }) {
 }
 
 function App() {
+  const [tubs, setTubs] = useState([])
+
+  useEffect(() => {
+    tubService
+      .getAll()
+      .then(tubsData => {
+        console.log(`React tubs: ${JSON.stringify(tubsData, null, 2)}`)
+      })
+  }, [])
+
+
   const requests = requestsData.requests
 
   return (
