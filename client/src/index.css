@@ -150,7 +150,19 @@ button:focus-visible {
   padding-left: 0;
 }
 
+.duck-list li {
+  position: relative;
+  padding-left: 2em;
+}
+
 .duck-list li::before {
-  content: "🦆 ";
-  margin-right: 0.5em;
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.2em;
+  width: 1.2em;
+  height: 1.2em;
+  background-image: url('assets/duck.png'); /* Replace with your image path */
+  background-size: contain;
+  background-repeat: no-repeat;
 }
