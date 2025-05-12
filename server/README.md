@@ -100,9 +100,10 @@ show dbs
 use requesttub
 -Switch to (or create if it doesn’t exist) a database called requestbin
 
-db.test_items.insertOne({ name: "first test", createdAt: new Date() })
+db.bodies.insertOne({ body: { bodydata1: "fake", bodydata2: "also fake" } })
+db.bodies.insertOne({ body: { bodydata1: "fake again", bodydata2: "also more fake"} })
 -db is the currently selected database
--test_items is the collection name (think of it like a table in SQL).
+-bodies is the collection name (think of it like a table in SQL).
 -If test_items doesn't exist yet, MongoDB creates it automatically.
 -insertOne(...) is a method that adds a single document (record in SQL (row)) to the collection.
 

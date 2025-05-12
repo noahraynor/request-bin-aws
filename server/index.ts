@@ -13,7 +13,9 @@ const PORT = 3000;
 //Test mongo db
 app.get('/api/mongo-test', async (req, res) => {
   try {
-    const collection = db.collection('test_items');
+    // collection variable is assigned to a MongoDB cursor
+    const collection = db.collection('bodies');
+    // converts the cursor to an array of MongoDB documents (as javascript objects)
     const items = await collection.find().toArray();
     res.json(items);
   } catch (err) {
@@ -25,7 +27,7 @@ app.get('/api/mongo-test', async (req, res) => {
 //Test PSQL
 app.get('/api/tubs2', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM tubs');
+    const result = await pool.query('SELECT encoded_id FROM tubs');
     res.json(result.rows);
   } catch (err) {
     console.error(err);
