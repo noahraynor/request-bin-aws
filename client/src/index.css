@@ -25,9 +25,9 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  /* place-items: center; */
-  min-width: 320px;
-  min-height: 100vh;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 h1 {
@@ -37,7 +37,7 @@ h1 {
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: 1px solid white;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
@@ -54,20 +54,26 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.page-header img {
+  height: 65px;
+  transform: translateY(4px)
 }
 
 .request {
+  border: 1px solid white;
+  border-radius: 4px;
+  margin-bottom: 25px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.method {
   font-family: monospace;
   padding: 4px 8px;
   margin: 4px 0;
@@ -76,20 +82,20 @@ button:focus-visible {
   color: white;
 }
 
-.method-get {
+.get {
   background-color: #2d8fdd;
 }
 
-.method-post {
+.post {
   background-color: #28a745;
 }
 
-.method-put {
+.put {
   background-color: #ffc107;
   color: black;
 }
 
-.method-delete {
+.delete {
   background-color: #dc3545;
 }
 
@@ -114,4 +120,37 @@ button:focus-visible {
 .toggle-content {
   margin-top: 10px;
   padding-left: 20px;
+}
+
+.homepage {
+  display: flex;
+  gap: 2rem; /* spacing between the two sections */
+  padding: 1rem;
+  align-items: flex-start;
+}
+
+.myTubs {
+  flex: 1;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 4px;
+  background-color: #1a1a1a;
+}
+
+.newTub {
+  flex: 2;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 4px;
+  background-color: #1a1a1a;
+}
+
+.duck-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.duck-list li::before {
+  content: "🦆 ";
+  margin-right: 0.5em;
 }
