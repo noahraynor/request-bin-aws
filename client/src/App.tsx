@@ -3,7 +3,7 @@ import './App.css'
 import tubsData from './data/tubs.json'
 import requestsData from './data/requests.json'
 
-const showHomepage = false
+const showHomepage = true
 
 function NewTub() {
   return (
@@ -49,7 +49,7 @@ function Request({request}) {
 
   return (
     <div>
-        <div class={`request ${methodClass}`}>METHOD: {request.method}</div>
+        <div className={`request ${methodClass}`}>METHOD: {request.method}</div>
         <div>TIME: {request.time}</div>
         <div>DATE: {request.date}</div>
         <div>
