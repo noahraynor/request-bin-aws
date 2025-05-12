@@ -144,3 +144,13 @@ button:focus-visible {
   border-radius: 4px;
   background-color: #1a1a1a;
 }
+
+.duck-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.duck-list li::before {
+  content: "🦆 ";
+  margin-right: 0.5em;
+}

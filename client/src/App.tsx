@@ -5,13 +5,13 @@ import tubImg from './assets/requestTub.png'
 import tubsData from './data/tubs.json'
 import requestsData from './data/requests.json'
 
-const showHomepage = false
+// const showHomepage = false
 
 function PageHeader() {
   return (
     <div className="page-header">
-      <a><img src={tubImg} alt="tub"></img></a>
-      <h1>Request Tubs</h1>
+      <img src={tubImg} alt="tub"></img>
+      <Link to="/"><h1>Request Tubs</h1></Link>
     </div>
   )
 }
@@ -30,13 +30,23 @@ function MyTubs() {
   const myTubs = tubsData.tubs
   return (
     <div className="myTubs">
-      <h2>My Tubs:</h2>
+      <h2>My Tubs</h2>
       <div>
-        <ul id="baskets">
-          {myTubs.map(tub => <li key={tub.encodedUrl}>{tub.encodedUrl}</li>)}
+        <ul class="duck-list" id="baskets">
+          {myTubs.map(tub => <li key={tub.encoded_id}><Link to={`/tubs/${tub.encoded_id}`}>{tub.encoded_id}</Link></li>)}
         </ul>
       </div>
     </div>
+  )
+}
+
+function Home() {
+  return (
+    <div className="homepage">
+      <PageHeader />
+      <MyTubs />
+      <NewTub />
+  </div>
   )
 }
 
@@ -77,6 +87,17 @@ function Request({request}) {
   )
 }
 
+function Requests() {
+  const requests = requestsData.requests
+  return (
+    <>
+      <PageHeader />
+      <RequestHeader />
+      {requests.map(request => <Request key={request.request_id} request={request}/>)}
+    </>
+  )
+}
+
 function ToggleInfo({ title, children }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -94,17 +115,12 @@ function App() {
   const requests = requestsData.requests
 
   return (
-    <>
-      <PageHeader />
-      {showHomepage && (
-        <div className="homepage">
-          <MyTubs />
-          <NewTub />
-        </div>
-      )}
-      {!showHomepage && <RequestHeader />}
-      {!showHomepage && requests.map(request => <Request key={request.request_id} request={request}/>)}
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />}/>
+        <Route path="/tubs/:encoded_id" element={<Requests />}/>
+      </Routes>
+    </Router>
   )
 }
 
