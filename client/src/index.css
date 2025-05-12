@@ -37,7 +37,7 @@ h1 {
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: 1px solid white;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
@@ -54,8 +54,19 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.page-header img {
+  height: 65px;
+  transform: translateY(4px)
+}
+
 .request {
-  border: 1px solid #ccc;
+  border: 1px solid #721818;
   border-radius: 4px;
   margin-bottom: 25px;
   padding-left: 1rem;
@@ -109,4 +120,27 @@ button:focus-visible {
 .toggle-content {
   margin-top: 10px;
   padding-left: 20px;
+}
+
+.homepage {
+  display: flex;
+  gap: 2rem; /* spacing between the two sections */
+  padding: 1rem;
+  align-items: flex-start;
+}
+
+.myTubs {
+  flex: 1;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 4px;
+  background-color: #1a1a1a;
+}
+
+.newTub {
+  flex: 2;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 4px;
+  background-color: #1a1a1a;
 }

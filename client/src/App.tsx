@@ -1,15 +1,25 @@
 import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import './App.css'
+import tubImg from './assets/requestTub.png'
 import tubsData from './data/tubs.json'
 import requestsData from './data/requests.json'
 
-const showHomepage = false
+const showHomepage = true
+
+function PageHeader() {
+  return (
+    <div className="page-header">
+      <a><img src={tubImg} alt="tub"></img></a>
+      <h1>Request Tubs</h1>
+    </div>
+  )
+}
 
 function NewTub() {
   return (
-    <div>
-      <h1>New Tubs</h1>
+    <div className="newTub">
+      <h2>New Tub</h2>
       <p>Create a new tub to collect and inspect HTTP requests</p>
         <button type="submit">Create Tub</button>
     </div>
@@ -19,7 +29,7 @@ function NewTub() {
 function MyTubs() {
   const myTubs = tubsData.tubs
   return (
-    <div>
+    <div className="myTubs">
       <div>My Tubs:</div>
       <div>
         <ul id="baskets">
@@ -50,19 +60,19 @@ function Request({request}) {
 
   return (
     <div className={"request"}>
-        <div className={`method ${methodClass}`}>METHOD: {request.method}</div>
-        <div>TIME: {request.time}</div>
-        <div>DATE: {request.date}</div>
-        <div>
-          <ToggleInfo title="Headers">
-            <p>{JSON.stringify(request.headers)}</p>
-          </ToggleInfo>
-        </div>
-        <div>
-          <ToggleInfo title="Body">
-            <p>{JSON.stringify(request.body)}</p>
-          </ToggleInfo>
-        </div>
+      <div className={`method ${methodClass}`}>METHOD: {request.method}</div>
+      <div>TIME: {request.time}</div>
+      <div>DATE: {request.date}</div>
+      <div>
+        <ToggleInfo title="Headers">
+          <p>{JSON.stringify(request.headers)}</p>
+        </ToggleInfo>
+      </div>
+      <div>
+        <ToggleInfo title="Body">
+          <p>{JSON.stringify(request.body)}</p>
+        </ToggleInfo>
+      </div>
     </div>
   )
 }
@@ -85,8 +95,13 @@ function App() {
 
   return (
     <>
-      {showHomepage && <NewTub />}
-      {showHomepage && <MyTubs />}
+      <PageHeader />
+      {showHomepage && (
+        <div className="homepage">
+          <MyTubs />
+          <NewTub />
+        </div>
+      )}
       {!showHomepage && <RequestHeader />}
       {!showHomepage && requests.map(request => <Request key={request.request_id} request={request}/>)}
     </>
