@@ -7,10 +7,14 @@ npm install
 npm install pg
 npm install --save-dev @types/pg
 npm install dotenv
-Make env file (see .env.example this is unique to you)
-
-# Install postgres on your machine
-# You should have a superuser postgres and a database called postgres (needed for next steps)
+Make env file 
+--- we each have our own
+--- ignored by .gitignore on purpose
+--- look at .env.example that is here
+--- you can copy that to your .env file
+Install postgres on your machine
+--- by default, you should have a superuser postgres and a 
+    database called postgres (needed for next steps)
 
 # Make the user and database
 sudo -i -u postgres 
