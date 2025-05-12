@@ -5,7 +5,7 @@ import tubImg from './assets/requestTub.png'
 import tubsData from './data/tubs.json'
 import requestsData from './data/requests.json'
 
-const showHomepage = true
+const showHomepage = false
 
 function PageHeader() {
   return (
@@ -30,7 +30,7 @@ function MyTubs() {
   const myTubs = tubsData.tubs
   return (
     <div className="myTubs">
-      <div>My Tubs:</div>
+      <h2>My Tubs:</h2>
       <div>
         <ul id="baskets">
           {myTubs.map(tub => <li key={tub.encodedUrl}>{tub.encodedUrl}</li>)}
