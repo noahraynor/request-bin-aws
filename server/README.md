@@ -1,6 +1,6 @@
 # Request Tubs Backend (Express + PostgreSQL + MongoDB)
 
-# Setup Database
+# Setup postgreSQL Database
 
 # Navigate to server folder in command line (Ubuntu in my case):
 npm install
@@ -80,3 +80,32 @@ VALUES (
 start the express server (npm run dev)
 http://localhost:3000/api/requests
 http://localhost:3000/api/tubs
+
+==========================================
+
+# Set up MongoDB Stuff
+
+install mongodb
+-find instructions online
+
+sudo systemctl status mongod
+-check that mongodb is active
+
+mongosh
+-new mongodb shell
+
+show dbs
+-shows all existing databases
+
+use requesttub
+-Switch to (or create if it doesn’t exist) a database called requestbin
+
+db.test_items.insertOne({ name: "first test", createdAt: new Date() })
+-db is the currently selected database
+-test_items is the collection name (think of it like a table in SQL).
+-If test_items doesn't exist yet, MongoDB creates it automatically.
+-insertOne(...) is a method that adds a single document (record in SQL (row)) to the collection.
+
+TEST IT!
+start the server then...
+http://localhost:3000/api/mongo-test
