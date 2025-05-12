@@ -78,8 +78,8 @@ VALUES (
 
 # Test out the API!
 start the express server (npm run dev)
-http://localhost:3000/api/requests
-http://localhost:3000/api/tubs
+http://localhost:3000/api/requests2
+http://localhost:3000/api/tubs2
 
 ==========================================
 
