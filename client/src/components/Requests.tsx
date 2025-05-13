@@ -2,10 +2,12 @@ import requestsData from '../data/requests.json'
 import PageHeader from './PageHeader'
 import { useState } from 'react'
 import copyImg from '../assets/copy.png'
+import tubService from '../services/tubService'
+
 
 export default function Requests({currentTub}) {
-  const requests = requestsData.requests
-  // const requests = tubService.getRequest().then(requests => requests)
+  // const requests = requestsData.requests
+  const requests = tubService.getRequests().then(requests => requests)
   
   return (
     <>
