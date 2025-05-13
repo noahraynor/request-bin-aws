@@ -1,13 +1,16 @@
 import requestsData from '../data/requests.json'
 import PageHeader from './PageHeader'
 import { useState } from 'react'
+import tubService from '../services/tubService'
 
-export default function Requests() {
+export default function Requests({currentTub}) {
   const requests = requestsData.requests
+  // const requests = tubService.getRequest().then(requests => requests)
+  
   return (
     <>
       <PageHeader />
-      <RequestHeader />
+      <RequestHeader currentTub={currentTub}/>
       {requests.map(request => <Request key={request.request_id} request={request}/>)}
     </>
   )
@@ -48,12 +51,12 @@ function Request({request}) {
   )
 }
 
-function RequestHeader() {
+function RequestHeader({currentTub}) {
   const encoded_id = requestsData.encoded_id
   const requestsLength = requestsData.requests.length
   return (
     <div>
-      <h1>{`Tub: ${encoded_id}`}</h1>
+      <h1>{`Tub: ${currentTub}`}</h1>
       <p>Requests are collected at https://host/{encoded_id}</p>
       <span>Requests Number: {requestsLength}</span>
       <br></br>
