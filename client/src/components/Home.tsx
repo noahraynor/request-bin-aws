@@ -29,10 +29,13 @@ function MyTubs() {
 
 export default function Home() {
   return (
-    <div className="homepage">
+    <>
       <PageHeader />
-      <MyTubs />
-      <NewTub />
-  </div>
+      <div className="homepage">
+        <MyTubs />
+        <NewTub />
+      </div>
+    </>
+
   )
 }

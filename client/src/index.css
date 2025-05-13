@@ -143,6 +143,9 @@ button:focus-visible {
   padding: 1rem;
   border-radius: 4px;
   background-color: #1a1a1a;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .duck-list {
