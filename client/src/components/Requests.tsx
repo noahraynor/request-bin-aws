@@ -1,12 +1,9 @@
 import requestsData from '../data/requests.json'
 import PageHeader from './PageHeader'
 import { useState } from 'react'
-<<<<<<< HEAD
 import tubService from '../services/tubService'
 import { useParams } from 'react-router-dom'
-=======
 import copyImg from '../assets/copy.png'
->>>>>>> origin/main
 
 export default function Requests() {
   const requests = requestsData.requests
