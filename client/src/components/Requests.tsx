@@ -1,8 +1,12 @@
 import requestsData from '../data/requests.json'
 import PageHeader from './PageHeader'
 import { useState } from 'react'
+<<<<<<< HEAD
 import tubService from '../services/tubService'
 import { useParams } from 'react-router-dom'
+=======
+import copyImg from '../assets/copy.png'
+>>>>>>> origin/main
 
 export default function Requests() {
   const requests = requestsData.requests
@@ -55,11 +59,24 @@ function Request({request}) {
 function RequestHeader() {
   const { encoded_id } = useParams()
   const requestsLength = requestsData.requests.length
+  const url = `${window.location.host}/recieve/${currentTub}`
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(url).then(() => setDisplayCheck(true))
+  }
+
   return (
     <div>
       <h1>{`Tub: ${encoded_id}`}</h1>
-      <p>Requests are collected at https://host/{encoded_id}</p>
-      <span>Requests Number: {requestsLength}</span>
+      <div>
+        Requests are collected at 
+        <span className="tub-url">{url}</span>{}
+        <span className="url-plus-checkbox">
+          <img src={copyImg} className='copy-image' onClick={handleCopy}></img>
+          {displayCheck && <GreenCheckbox />}
+        </span>
+      </div>
+      <span>Total Requests: {requestsLength}</span>
       <br></br>
       <br></br>
       <br></br>

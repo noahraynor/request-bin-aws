@@ -160,7 +160,6 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
   position: relative;
-  /* padding-left: 2em; */
 }
 
 .duck-list li::before {
@@ -174,4 +173,65 @@ button:focus-visible {
   background-image: url('assets/duck.png');
   background-size: contain;
   background-repeat: no-repeat;
+}
+
+.tub-url {
+  background-color: white;
+  color: black;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-weight: bold;
+  margin-left: 0.5em;
+}
+
+.copy-image {
+  height: 25px;
+  border-radius: 4px;
+  transform: translateY(7px);
+  margin-left: 0.5em;
+  /* display: inline-block; */
+  transition: all 0.2s ease;
+}
+
+.copy-image:hover {
+  transform: translateY(7px) scale(1.1);
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+  opacity: 0.85;
+}
+
+.checkbox-container {
+  width: 20px;
+  height: 20px;
+  border: 2px solid green;
+  margin-left: 4px;
+  border-radius: 4px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(8px) scale(1.1);
+  animation: checkboxFadeIn 0.15s ease-out forwards;
+}
+
+@keyframes checkboxFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(8px) scale(1.1);
+  }
+}
+
+.checkbox-checkmark {
+  width: 10px;
+  height: 5px;
+  border-left: 2px solid green;
+  border-bottom: 2px solid green;
+  transform: rotate(-45deg);
+}
+
+.url-plus-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
 }
