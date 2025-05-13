@@ -3,24 +3,15 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './components/Home'
 import Requests from './components/Requests'
 import './App.css'
-import tubService from './services/tubService'
 
 function App() {
-  const [tubs, setTubs] = useState([])
-
-  useEffect(() => {
-    tubService
-      .getAll()
-      .then(tubsData => {
-        console.log(`React tubs: ${JSON.stringify(tubsData, null, 2)}`)
-      })
-  }, [])
+  const [currentTub, setCurrentTub] = useState(null)
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />}/>
-        <Route path="/tubs/:encoded_id" element={<Requests />}/>
+        <Route path="/" element={<Home setCurrentTub={setCurrentTub}/>}/>
+        <Route path="/tubs/:encoded_id" element={<Requests currentTub={currentTub}/>}/>
       </Routes>
     </Router>
   )

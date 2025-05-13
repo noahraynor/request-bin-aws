@@ -1,15 +1,9 @@
-export interface TubWithRequests {
-  id: Number,
-  encoded_id: String,
-  requests: Request[]
-}
-
-export type Tub = Pick<TubWithRequests, 'encoded_id'>;
+export type Tub = {encoded_id: string}
 
 export interface Request {
-  id: Number,
-  method: String,
-  headers: String,
-  Timestamp: String,
-  request_body: String
+  id: number,
+  method: string,
+  headers: string,
+  Timestamp: string,
+  body: string
 }

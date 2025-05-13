@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { Tub, TubWithRequests } from '../types'
+import type { Tub, Request } from '../types'
 const baseUrl = '/api/tubs'
 
 const getAll = (): Promise<Tub[]> => {
@@ -7,16 +7,16 @@ const getAll = (): Promise<Tub[]> => {
   return request.then(response => response.data)
 }
 
-// [AH]: This is not entirely setup... This needs more work
-const getTubWithRequests = (tubId: String): Promise<TubWithRequests> => {
-  const request = axios.get<TubWithRequests>(baseUrl)
+const getRequests = (encoded_tubId: string): Promise<Request[]> => {
+  const request = axios.get<Request[]>(`baseUrl/${encoded_tubId}`)
   return request.then(response => response.data)
 }
 
 const createTub = () => {
-  
+  const request = axios.post('https://rbaskets.in/yoloooooo')
+  return request.then(response => response.data)
 }
 
 export default {
-  getAll
+  getAll, getRequests, createTub
 }
