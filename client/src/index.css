@@ -71,6 +71,7 @@ button:focus-visible {
   margin-bottom: 25px;
   padding-left: 1rem;
   padding-right: 1rem;
+  background-color: #1a1a1a;
 }
 
 .method {
@@ -135,6 +136,7 @@ button:focus-visible {
   padding: 1rem;
   border-radius: 4px;
   background-color: #1a1a1a;
+  text-align: center;
 }
 
 .newTub {
@@ -143,6 +145,9 @@ button:focus-visible {
   padding: 1rem;
   border-radius: 4px;
   background-color: #1a1a1a;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .duck-list {
@@ -151,18 +156,22 @@ button:focus-visible {
 }
 
 .duck-list li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  padding-left: 2em;
+  /* padding-left: 2em; */
 }
 
 .duck-list li::before {
   content: "";
-  position: absolute;
+  display: inline-block;
   left: 0;
   top: 0.2em;
   width: 1.2em;
   height: 1.2em;
-  background-image: url('assets/duck.png'); /* Replace with your image path */
+  padding-right: 0.5em;
+  background-image: url('assets/duck.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
