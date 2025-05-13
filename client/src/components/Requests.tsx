@@ -53,10 +53,19 @@ function Request({request}) {
   )
 }
 
+function GreenCheckbox() {
+  return (
+    <div className="checkbox-container">
+      <div className="checkbox-checkmark" />
+    </div>
+  )
+}
+
 function RequestHeader() {
   const { encoded_id } = useParams()
+  const [displayCheck, setDisplayCheck] = useState(false)
   const requestsLength = requestsData.requests.length
-  const url = `${window.location.host}/recieve/${currentTub}`
+  const url = `${window.location.host}/recieve/${encoded_id}`
 
   const handleCopy = () => {
     navigator.clipboard.writeText(url).then(() => setDisplayCheck(true))
