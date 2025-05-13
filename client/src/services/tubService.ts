@@ -13,7 +13,7 @@ const getRequests = (encoded_tubId: string): Promise<Request[]> => {
 }
 
 const createTub = () => {
-  const request = axios.post('https://rbaskets.in/yoloooooo')
+  const request = axios.post('https://rbaskets.in/kz6cku7')
   return request.then(response => response.data)
 }
 

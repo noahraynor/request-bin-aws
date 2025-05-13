@@ -2,6 +2,7 @@ import PageHeader from './PageHeader'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import tubService from '../services/tubService'
+import Modal from './Modal'
 
 function NewTub({onClick}) {
   return (
@@ -29,13 +30,7 @@ function MyTubs({setCurrentTub, tubs}) {
 
 export default function Home({setCurrentTub}) {
   const [tubs, setTubs] = useState([])
-
-  function handleClick(e) {
-    e.preventDefault()
-    tubService.createTub()
-    console.log('CREATED A TUB')
-    // tubService.createTub().then(tub => setTubs(tubs.concat(tub)))
-  }
+  const [displayModal, setDisplayModal] = useState(false)
 
   useEffect(() => {
     tubService
@@ -45,6 +40,18 @@ export default function Home({setCurrentTub}) {
       })
   }, [])
 
+  function handleClick(e) {
+    e.preventDefault()
+    // tubService.createTub()
+    setDisplayModal(true)
+    console.log('CREATED A TUB')
+    // tubService.createTub().then(tub => setTubs(tubs.concat(tub)))
+  }
+
+  const handleClose = () => {
+    setDisplayModal(false)
+  }
+
 
   return (
     <>
@@ -53,6 +60,7 @@ export default function Home({setCurrentTub}) {
         <MyTubs setCurrentTub={setCurrentTub} tubs={tubs}/>
         <NewTub onClick={handleClick}/>
       </div>
+      {displayModal && <Modal onClose={handleClose}/>}
     </>
 
   )
