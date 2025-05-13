@@ -2,15 +2,16 @@ import requestsData from '../data/requests.json'
 import PageHeader from './PageHeader'
 import { useState } from 'react'
 import tubService from '../services/tubService'
+import { useParams } from 'react-router-dom'
 
-export default function Requests({currentTub}) {
+export default function Requests() {
   const requests = requestsData.requests
   // const requests = tubService.getRequest().then(requests => requests)
   
   return (
     <>
       <PageHeader />
-      <RequestHeader currentTub={currentTub}/>
+      <RequestHeader />
       {requests.map(request => <Request key={request.request_id} request={request}/>)}
     </>
   )
@@ -51,12 +52,12 @@ function Request({request}) {
   )
 }
 
-function RequestHeader({currentTub}) {
-  const encoded_id = requestsData.encoded_id
+function RequestHeader() {
+  const { encoded_id } = useParams()
   const requestsLength = requestsData.requests.length
   return (
     <div>
-      <h1>{`Tub: ${currentTub}`}</h1>
+      <h1>{`Tub: ${encoded_id}`}</h1>
       <p>Requests are collected at https://host/{encoded_id}</p>
       <span>Requests Number: {requestsLength}</span>
       <br></br>

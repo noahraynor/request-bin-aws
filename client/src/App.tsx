@@ -5,13 +5,11 @@ import Requests from './components/Requests'
 import './App.css'
 
 function App() {
-  const [currentTub, setCurrentTub] = useState(null)
-
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home setCurrentTub={setCurrentTub}/>}/>
-        <Route path="/tubs/:encoded_id" element={<Requests currentTub={currentTub}/>}/>
+        <Route path="/" element={<Home />}/>
+        <Route path="/tubs/:encoded_id" element={<Requests />}/>
       </Routes>
     </Router>
   )
