@@ -40,10 +40,26 @@ app.get('/api/tubs', async (req, res) => {
 // Returns an array of all requests for a specific tub with encoded_id: id
 app.get('/api/tubs/:id/requests', async (req, res) => {
   try {
-    const encoded_id = req.params.id
-    const decoded_id = hashids.decode(encoded_id[0])
-    const result = await pool.query('SELECT * FROM requests WHERE tub_id = $1', [decoded_id]);
-    res.json(result.rows);
+    const encoded_id = req.params.id;
+    //const decoded_id = hashids.decode(encoded_id)[0];
+    const decoded_id = 1;
+    const result = await pool.query(`SELECT * FROM requests WHERE tub_id=$1`, [decoded_id]);
+    const sqlRequests = result.rows;
+    console.log(sqlRequests);
+
+    const body = { fakedata: "test", fakedata2: "test2" };
+    
+    let requests = sqlRequests.map(request => {
+      return {
+        id: request.id,
+        method: request.method,
+        headers: request.headers,
+        timestamp: new Date(request.received_at),
+        body: body,
+      };
+    });
+
+    res.json(requests);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Database error' });
@@ -51,12 +67,12 @@ app.get('/api/tubs/:id/requests', async (req, res) => {
 });
 
 // Example request type:
-export interface Request {
-  id: number,
-  method: string,
-  headers: string,
-  Timestamp: string,
-  body: string
+interface Request {
+  id: number;
+  method: string;
+  headers: { [key: string]: string };
+  timestamp: Date;
+  body: string;
 }
 
 // Creates a new tub
