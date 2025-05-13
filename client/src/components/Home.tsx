@@ -6,7 +6,7 @@ import tubService from '../services/tubService'
 function NewTub({onClick}) {
   return (
     <div className="newTub">
-      <h2>New Tub</h2>
+      <h2>Create New Tub</h2>
       <p>Create a new tub to collect and inspect HTTP requests</p>
         <button type="submit" onClick={(e) => onClick(e)}>Create Tub</button>
     </div>
