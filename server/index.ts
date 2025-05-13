@@ -3,12 +3,14 @@ import axios from 'axios';
 import ngrok from 'ngrok'
 import pool from './src/db'
 import { db } from './src/mongo';
+import Hashids from 'hashids';
 
 const app = express();
 app.use(express.json());
 
 
 const PORT = 3000;
+const hashids = new Hashids('tubs-secret-salt-val', 6)
 
 //Test mongo db
 app.get('/api/mongo-test', async (req, res) => {
@@ -25,7 +27,7 @@ app.get('/api/mongo-test', async (req, res) => {
 });
 
 //Test PSQL
-app.get('/api/tubs2', async (req, res) => {
+app.get('/api/tubs', async (req, res) => {
   try {
     const result = await pool.query('SELECT encoded_id FROM tubs');
     res.json(result.rows);
@@ -35,10 +37,12 @@ app.get('/api/tubs2', async (req, res) => {
   }
 });
 
-//Test PSQL
-app.get('/api/requests2', async (req, res) => {
+// Returns an array of all requests for a specific tub with encoded_id: id
+app.get('/api/tubs/:id/requests', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM requests');
+    const encoded_id = req.params.id
+    const decoded_id = hashids.decode(encoded_id[0])
+    const result = await pool.query('SELECT * FROM requests WHERE tub_id = $1', [decoded_id]);
     res.json(result.rows);
   } catch (err) {
     console.error(err);
@@ -46,38 +50,41 @@ app.get('/api/requests2', async (req, res) => {
   }
 });
 
-// Get all tubs
-app.get('/api/tubs', (req, res) => {
-  console.log('GET /api/tubs: getting all tubs')
-  const tubs =  [
-      {
-        "encoded_id": "a8f3jd92"
-      },
-      {
-        "encoded_id": "k2djw93l"
-      },
-      {
-        "encoded_id": "z7x1op5n"
-      }
-    ]
-  res.json(tubs)
-});
+// Example request type:
+export interface Request {
+  id: number,
+  method: string,
+  headers: string,
+  Timestamp: string,
+  body: string
+}
 
 // Creates a new tub
-app.post('/api/tubs', (req, res) => {
+app.post('/api/tubs', async (req, res) => {
   console.log('creating a new tub')
-});
+  try {
+    const idResult = await pool.query("SELECT nextval('tubs_id_seq')");
+    const internalId = idResult.rows[0].nextval
 
-// Get all requests in a specific tub
-app.get('/api/tubs/:id', (req, res) => {
-  let publicId = req.params.id 
-  console.log(`getting all request for tub ${publicId}`)
-  res.send(`All requests from tub ${publicId}`)
+    const encoded_id = hashids.encode(internalId)
+    await pool.query(
+      `INSERT INTO tubs (id, encoded_id)
+       VALUES ($1, $2)`, [internalId, encoded_id])
+    
+    console.log('New tub created with id: ', encoded_id)
+    res.json({encoded_id: encoded_id})
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database failed to create new tub" });
+  }
+  
 });
 
 // Endpoint for all webhooks requests.
-app.all('/receive/', (req, res) => {
-  console.log(`Request method ${JSON.stringify(req.method)}. Body: ${JSON.stringify(req.body)}`)
+app.all('/receive/:id', (req, res) => {
+  console.log("Request method:", req.method)
+  console.log("Body: ", req.body)
+  console.log("Tub Id: ", req.params.id)
   res.send('request received')
 });
 
