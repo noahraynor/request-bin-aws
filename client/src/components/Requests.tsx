@@ -73,7 +73,7 @@ function RequestHeader() {
 
   return (
     <div>
-      <h1>{`Tub: ${encoded_id}`}</h1>
+      <h2>{`Current Tub: ${encoded_id}`}</h2>
       <div>
         Requests are collected at 
         <span className="tub-url">{url}</span>{}
