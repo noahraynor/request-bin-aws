@@ -81,11 +81,25 @@ app.post('/api/tubs', async (req, res) => {
 });
 
 // Endpoint for all webhooks requests.
-app.all('/receive/:id', (req, res) => {
-  console.log("Request method:", req.method)
-  console.log("Body: ", req.body)
-  console.log("Tub Id: ", req.params.id)
-  res.send('request received')
+app.all('/receive/:id', async (req, res) => {
+  const encoded_id = req.params.id
+  const decoded_id = hashids.decode(encoded_id)[0];
+  try {
+    // Insert body to mongo
+    const collection = db.collection('bodies');
+    const mongoResult = await collection.insertOne({ body: req.body })
+    const mongoBodyId = mongoResult.insertedId.toString()
+    
+    // Insert new request into sql
+    const result = await pool.query(
+      `INSERT INTO requests (tub_id, method, headers, body_id)
+      VALUES ($1, $2, $3, $4)`,
+      [decoded_id, req.method, req.headers, mongoBodyId]);
+    res.status(200).json({message: "Success"})
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({error: "Database failed to create a new request"})
+  }
 });
 
 interface Tunnel {
