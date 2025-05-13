@@ -3,12 +3,14 @@ import axios from 'axios';
 import ngrok from 'ngrok'
 import pool from './src/db'
 import { db } from './src/mongo';
+import Hashids from 'hashids';
 
 const app = express();
 app.use(express.json());
 
 
 const PORT = 3000;
+const hashids = new Hashids('tubs-secret-salt-val', 6)
 
 //Test mongo db
 app.get('/api/mongo-test', async (req, res) => {
@@ -64,8 +66,24 @@ app.get('/api/tubs', (req, res) => {
 });
 
 // Creates a new tub
-app.post('/api/tubs', (req, res) => {
+app.post('/api/tubs', async (req, res) => {
   console.log('creating a new tub')
+  try {
+    const idResult = await pool.query("SELECT nextval('tubs_id_seq')");
+    const internalId = idResult.rows[0].nextval
+
+    const encoded_id = hashids.encode(internalId)
+    await pool.query(
+      `INSERT INTO tubs (id, encoded_id)
+       VALUES ($1, $2)`, [internalId, encoded_id])
+    
+    console.log('New tub created with id: ', encoded_id)
+    res.json({encoded_id: encoded_id})
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database failed to create new tub" });
+  }
+  
 });
 
 // Get all requests in a specific tub
@@ -76,8 +94,10 @@ app.get('/api/tubs/:id', (req, res) => {
 });
 
 // Endpoint for all webhooks requests.
-app.all('/receive/', (req, res) => {
-  console.log(`Request method ${JSON.stringify(req.method)}. Body: ${JSON.stringify(req.body)}`)
+app.all('/receive/:id', (req, res) => {
+  console.log("Request method:", req.method)
+  console.log("Body: ", req.body)
+  console.log("Tub Id: ", req.params.id)
   res.send('request received')
 });
 
