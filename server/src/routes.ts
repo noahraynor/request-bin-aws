@@ -78,17 +78,31 @@ interface RequestInternal {
 router.delete('/api/requests/:request_id', async (req: Request, res: Response) => {
   try {
     let request_id = req.params.request_id;
-    const result = await pool.query(`DELETE FROM requests WHERE id=$1`, [request_id]);
 
-    // NEED TO ADD MONGO BODY DELETION HERE
-
-    if (result.rowCount! > 0) {
-      console.log('Delete successful!');
-      res.sendStatus(204); // No Content
-    } else {
-      console.log('No matching row found. Nothing deleted.');
+    // Delete request from SQL
+    // ALSO save body_id
+    const result = await pool.query(`DELETE FROM requests WHERE id=$1 RETURNING body_id`, [request_id]);
+    if (result.rowCount! < 1) {
+      console.log('No matching request found. Nothing deleted.');
       res.status(404).json({ error: 'Request not found' });
     }
+
+    // Delete body from Mongo
+    const body_id = result.rows[0].body_id;
+    if (!ObjectId.isValid(body_id)) {
+      console.warn(`Invalid ObjectId: ${body_id}`);
+      return res.status(400).json({ error: 'Invalid body_id' });
+    }
+    const collection = db.collection('bodies');
+    const result2 = await collection.deleteOne({ _id: new ObjectId(body_id) });
+    if (result2.deletedCount < 1) {
+      console.log('No matching body found. Nothing deleted.');
+      res.status(404).json({ error: 'Body not found' });
+    }
+
+    // Success from Mongo and SQL!
+    console.log('Delete successful!');
+    res.sendStatus(204); // No Content
     
   } catch (err) {
     console.error(err);
