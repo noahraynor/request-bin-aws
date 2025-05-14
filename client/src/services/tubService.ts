@@ -13,11 +13,7 @@ const getRequests = (encoded_tubId: string): Promise<Request[]> => {
 }
 
 const createTub = () => {
-<<<<<<< HEAD
-  const request = axios.post('https://rbaskets.in/kz6cku7')
-=======
   const request = axios.post(baseUrl)
->>>>>>> origin/main
   return request.then(response => response.data)
 }
 
