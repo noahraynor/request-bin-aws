@@ -1,18 +1,19 @@
 import requestsData from '../data/requests.json'
 import PageHeader from './PageHeader'
 import { useState } from 'react'
-import copyImg from '../assets/copy.png'
 import tubService from '../services/tubService'
+import { useParams } from 'react-router-dom'
+import copyImg from '../assets/copy.png'
 
 
-export default function Requests({currentTub}) {
-  // const requests = requestsData.requests
-  const requests = tubService.getRequests().then(requests => requests)
-  
+export default function Requests() {
+  const { encoded_id } = useParams()
+  const requests = tubService.getRequests(encoded_id).then(requests => requests)
+
   return (
     <>
       <PageHeader />
-      <RequestHeader currentTub={currentTub}/>
+      <RequestHeader encoded_id={encoded_id} />
       {requests.map(request => <Request key={request.request_id} request={request}/>)}
     </>
   )
@@ -61,10 +62,10 @@ function GreenCheckbox() {
   )
 }
 
-function RequestHeader({currentTub}) {
+function RequestHeader({encoded_id}) {
   const [displayCheck, setDisplayCheck] = useState(false)
   const requestsLength = requestsData.requests.length
-  const url = `${window.location.host}/recieve/${currentTub}`
+  const url = `${window.location.host}/recieve/${encoded_id}`
 
   const handleCopy = () => {
     navigator.clipboard.writeText(url).then(() => setDisplayCheck(true))
@@ -72,7 +73,7 @@ function RequestHeader({currentTub}) {
 
   return (
     <div>
-      <h1>{`Tub: ${currentTub}`}</h1>
+      <h2>{`Current Tub: ${encoded_id}`}</h2>
       <div>
         Requests are collected at 
         <span className="tub-url">{url}</span>{}

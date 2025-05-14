@@ -13,21 +13,21 @@ function NewTub({onClick}) {
   )
 }
 
-function MyTubs({setCurrentTub, tubs}) {
+function MyTubs({tubs}) {
 
   return (
     <div className="myTubs">
       <h2>My Tubs</h2>
       <div>
         <ul className="duck-list" id="baskets">
-          {tubs.map(tub => <li key={tub.encoded_id} onClick={() => setCurrentTub(tub.encoded_id)}><Link to={`/tubs/${tub.encoded_id}`}>{tub.encoded_id}</Link></li>)}
+          {tubs.map(tub => <li key={tub.encoded_id} ><Link to={`/tubs/${tub.encoded_id}`}>{tub.encoded_id}</Link></li>)}
         </ul>
       </div>
     </div>
   )
 }
 
-export default function Home({setCurrentTub}) {
+export default function Home() {
   const [tubs, setTubs] = useState([])
 
   function handleClick(e) {
@@ -50,7 +50,7 @@ export default function Home({setCurrentTub}) {
     <>
       <PageHeader />
       <div className="homepage">
-        <MyTubs setCurrentTub={setCurrentTub} tubs={tubs}/>
+        <MyTubs tubs={tubs}/>
         <NewTub onClick={handleClick}/>
       </div>
     </>
