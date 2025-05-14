@@ -55,12 +55,16 @@ function Request({request}: RequestProps) {
       <div>TIME: {time}</div>
       <div>
         <ToggleInfo title="Headers">
-          <p>{JSON.stringify(request.headers)}</p>
+          <pre>
+            <code>{JSON.stringify(request.headers, null, 2)}</code>
+          </pre>
         </ToggleInfo>
       </div>
       <div>
         <ToggleInfo title="Body">
-          <p>{JSON.stringify(request.body)}</p>
+          <pre>
+            <code>{JSON.stringify(request.body, null, 2)}</code>
+          </pre>
         </ToggleInfo>
       </div>
     </div>
