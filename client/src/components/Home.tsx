@@ -30,6 +30,13 @@ function MyTubs({tubs}: MyTubsProps) {
 
 export default function Home() {
   const [tubs, setTubs] = useState<Tub[]>([])
+
+  const handleClick: ButtonClickHandler = (e) => {
+    e.preventDefault()
+    tubService.createTub().then(tub => setTubs(tubs.concat(tub)))
+  }
+export default function Home({setCurrentTub}) {
+  const [tubs, setTubs] = useState([])
   const [displayModal, setDisplayModal] = useState(false)
   const [newTubId, setNewTubId] = useState(null)
 
@@ -41,9 +48,16 @@ export default function Home() {
       })
   }, [])
 
-  const handleClick: ButtonClickHandler = (e) => {
+  function handleClick(e) {
     e.preventDefault()
-    tubService.createTub().then(tub => setTubs(tubs.concat(tub)))
+    // tubService.createTub()
+    setDisplayModal(true)
+    console.log('CREATED A TUB')
+    // tubService.createTub().then(tub => {
+    // setTubs(tubs.concat(tub))
+    // setNewTubId(tub.encoded_id)
+    // })
+    
   }
 
   const handleClose = () => {
