@@ -12,7 +12,7 @@ export default function Modal({ onClose, newTubId }) {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2>New Tub Created!</h2>
         <h3>New Tub Id: {newTubId}</h3>
-        <div>
+        <div className="modal-buttons">
           <button onClick={onClose}>Close</button>
           <button onClick={handleOpenTub}>Open Tub</button>
         </div>

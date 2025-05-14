@@ -43,6 +43,7 @@ button {
   border-radius: 8px;
   border: 1px solid white;
   padding: 0.6em 1.2em;
+  margin: 0 5px;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
@@ -231,7 +232,7 @@ button:focus-visible {
   height: 5px;
   border-left: 2px solid green;
   border-bottom: 2px solid green;
-  transform: rotate(-45deg);
+  transform: rotate(-45deg) translateY(-2px) translateX(2px);
 }
 
 .url-plus-checkbox {
@@ -249,12 +250,27 @@ button:focus-visible {
   background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
-  align-items: center;
-  z-index: 999;
+  align-items: flex-start;
+  padding-top: 12vh;
+  z-index: 800;
+  overflow-y: auto;
 }
 
 .modal-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
+  background: #222;
+  color: #fff;
+  padding: 0.5rem 2.5rem 0.8rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 30%;
+  border: 2px solid #444;
+  text-align: center;
+  justify-content: space-between;
+}
+
+.modal-buttons {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
 }

@@ -43,7 +43,11 @@ export default function Home() {
 
   const handleClick: ButtonClickHandler = (e) => {
     e.preventDefault()
-    tubService.createTub().then(tub => setTubs(tubs.concat(tub)))
+    tubService.createTub().then(tub => {
+      setTubs(tubs.concat(tub))
+      setNewTubId(tub.encoded_id)
+      setDisplayModal(true)
+    })
   }
 
   const handleClose = () => {
