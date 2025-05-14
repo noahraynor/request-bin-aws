@@ -31,6 +31,7 @@ function MyTubs({setCurrentTub, tubs}) {
 export default function Home({setCurrentTub}) {
   const [tubs, setTubs] = useState([])
   const [displayModal, setDisplayModal] = useState(false)
+  const [newTubId, setNewTubId] = useState(null)
 
   useEffect(() => {
     tubService
@@ -45,7 +46,11 @@ export default function Home({setCurrentTub}) {
     // tubService.createTub()
     setDisplayModal(true)
     console.log('CREATED A TUB')
-    // tubService.createTub().then(tub => setTubs(tubs.concat(tub)))
+    // tubService.createTub().then(tub => {
+    // setTubs(tubs.concat(tub))
+    // setNewTubId(tub.encoded_id)
+    // })
+    
   }
 
   const handleClose = () => {
@@ -60,7 +65,7 @@ export default function Home({setCurrentTub}) {
         <MyTubs setCurrentTub={setCurrentTub} tubs={tubs}/>
         <NewTub onClick={handleClick}/>
       </div>
-      {displayModal && <Modal onClose={handleClose}/>}
+      {displayModal && <Modal onClose={handleClose} newTubId={newTubId}/>}
     </>
 
   )
