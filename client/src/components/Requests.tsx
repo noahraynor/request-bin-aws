@@ -1,6 +1,6 @@
 import requestsData from '../data/requests.json'
 import PageHeader from './PageHeader'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import tubService from '../services/tubService'
 import { useParams } from 'react-router-dom'
 import copyImg from '../assets/copy.png'
@@ -8,8 +8,15 @@ import copyImg from '../assets/copy.png'
 
 export default function Requests() {
   const { encoded_id } = useParams()
-  const requests = tubService.getRequests(encoded_id).then(requests => requests)
+  const [requests, setRequests] = useState([])
 
+  useEffect(() => {
+    tubService.getRequests(encoded_id)
+    .then(requests => setRequests(requests))
+    .catch(err => console.error('Failed to fetch requests:', err))
+  })
+  
+  console.log(requests)
   return (
     <>
       <PageHeader />
