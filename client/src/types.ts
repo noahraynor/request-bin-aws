@@ -4,6 +4,30 @@ export interface Request {
   id: number,
   method: string,
   headers: string,
-  Timestamp: string,
+  timestamp: Date,
   body: string
+}
+
+export type ButtonClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => void
+
+export interface NewTubProps {
+  onClick: ButtonClickHandler
+}
+
+export interface MyTubsProps {
+  tubs: Tub[]
+}
+
+export interface RequestProps {
+  request: Request;
+}
+
+export interface ToggleInfoProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+export interface RequestHeaderProps {
+  encoded_id: string;
+  requestsLength: number;
 }
