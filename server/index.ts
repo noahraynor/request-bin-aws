@@ -53,8 +53,8 @@ app.get('/api/tubs/:id/requests', async (req, res) => {
     const requests = await Promise.all(
       sqlRequests.map(async (request) => {
 
-        //let body_id = request.body_id;
-        let body_id = '682272e2f5dd2b9ccb6b140d';
+        let body_id = request.body_id;
+        // let body_id = '682272e2f5dd2b9ccb6b140d';
 
         if (!ObjectId.isValid(body_id)) {
           console.warn(`Invalid ObjectId: ${body_id}`);
