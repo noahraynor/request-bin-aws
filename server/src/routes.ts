@@ -28,7 +28,6 @@ router.get('/api/tubs/:id/requests', async (req: Request, res: Response) => {
   try {
     const encoded_id = req.params.id;
     const decoded_id = hashids.decode(encoded_id)[0];
-    // const decoded_id = 1;
     const result = await pool.query(`SELECT * FROM requests WHERE tub_id=$1`, [decoded_id]);
     const sqlRequests = result.rows;
     console.log(sqlRequests);
@@ -37,7 +36,6 @@ router.get('/api/tubs/:id/requests', async (req: Request, res: Response) => {
       sqlRequests.map(async (request) => {
 
         let body_id = request.body_id;
-        // let body_id = '682272e2f5dd2b9ccb6b140d';
 
         if (!ObjectId.isValid(body_id)) {
           console.warn(`Invalid ObjectId: ${body_id}`);
@@ -74,6 +72,29 @@ interface RequestInternal {
   timestamp: Date;
   body: { [key: string]: string };
 }
+
+// Delete a request by request_id
+// This should match primary key in requests database SQL
+router.delete('/api/requests/:request_id', async (req: Request, res: Response) => {
+  try {
+    let request_id = req.params.request_id;
+    const result = await pool.query(`DELETE FROM requests WHERE id=$1`, [request_id]);
+
+    // NEED TO ADD MONGO BODY DELETION HERE
+
+    if (result.rowCount! > 0) {
+      console.log('Delete successful!');
+      res.sendStatus(204); // No Content
+    } else {
+      console.log('No matching row found. Nothing deleted.');
+      res.status(404).json({ error: 'Request not found' });
+    }
+    
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Unexpected error, maybe db connection issue" });
+  }
+});
 
 // Creates a new tub
 router.post('/api/tubs', async (_req: Request, res: Response) => {
