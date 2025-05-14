@@ -4,6 +4,7 @@ import ngrok from 'ngrok'
 import pool from './src/db'
 import { db } from './src/mongo';
 import Hashids from 'hashids';
+import path from 'path';
 import { ObjectId } from 'mongodb';
 
 const app = express();
@@ -43,8 +44,8 @@ app.get('/api/tubs', async (req, res) => {
 app.get('/api/tubs/:id/requests', async (req, res) => {
   try {
     const encoded_id = req.params.id;
-    //const decoded_id = hashids.decode(encoded_id)[0];
-    const decoded_id = 1;
+    const decoded_id = hashids.decode(encoded_id)[0];
+    // const decoded_id = 1;
     const result = await pool.query(`SELECT * FROM requests WHERE tub_id=$1`, [decoded_id]);
     const sqlRequests = result.rows;
     console.log(sqlRequests);
@@ -52,8 +53,8 @@ app.get('/api/tubs/:id/requests', async (req, res) => {
     const requests = await Promise.all(
       sqlRequests.map(async (request) => {
 
-        //let body_id = request.body_id;
-        let body_id = '682272e2f5dd2b9ccb6b140d';
+        let body_id = request.body_id;
+        // let body_id = '682272e2f5dd2b9ccb6b140d';
 
         if (!ObjectId.isValid(body_id)) {
           console.warn(`Invalid ObjectId: ${body_id}`);
@@ -161,6 +162,9 @@ app.get('/api/ngrok-url', async (req, res) => {
     res.status(500).json({ error: 'Failed to retrieve ngrok URL' });
   }
 });
+
+const CLIENT_DIST_PATH = path.join(__dirname, '..', 'client', 'dist');
+app.use(express.static(CLIENT_DIST_PATH));
 
 app.listen(PORT, async () => {
   console.log(`Server running on port ${PORT}`);

@@ -2,8 +2,9 @@ import PageHeader from './PageHeader'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import tubService from '../services/tubService'
+import type { ButtonClickHandler, NewTubProps, Tub, MyTubsProps } from '../types'
 
-function NewTub({onClick}) {
+function NewTub({onClick}: NewTubProps) {
   return (
     <div className="newTub">
       <h2>Create New Tub</h2>
@@ -13,8 +14,7 @@ function NewTub({onClick}) {
   )
 }
 
-function MyTubs({tubs}) {
-
+function MyTubs({tubs}: MyTubsProps) {
   return (
     <div className="myTubs">
       <h2>My Tubs</h2>
@@ -28,13 +28,11 @@ function MyTubs({tubs}) {
 }
 
 export default function Home() {
-  const [tubs, setTubs] = useState([])
+  const [tubs, setTubs] = useState<Tub[]>([])
 
-  function handleClick(e) {
+  const handleClick: ButtonClickHandler = (e) => {
     e.preventDefault()
-    tubService.createTub()
-    console.log('CREATED A TUB')
-    // tubService.createTub().then(tub => setTubs(tubs.concat(tub)))
+    tubService.createTub().then(tub => setTubs(tubs.concat(tub)))
   }
 
   useEffect(() => {
