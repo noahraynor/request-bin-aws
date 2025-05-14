@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import tubService from '../services/tubService'
 import Modal from './Modal'
+import type { ButtonClickHandler, NewTubProps, Tub, MyTubsProps } from '../types'
 
-function NewTub({onClick}) {
+function NewTub({onClick}: NewTubProps) {
   return (
     <div className="newTub">
       <h2>Create New Tub</h2>
@@ -14,22 +15,21 @@ function NewTub({onClick}) {
   )
 }
 
-function MyTubs({setCurrentTub, tubs}) {
-
+function MyTubs({tubs}: MyTubsProps) {
   return (
     <div className="myTubs">
       <h2>My Tubs</h2>
       <div>
         <ul className="duck-list" id="baskets">
-          {tubs.map(tub => <li key={tub.encoded_id} onClick={() => setCurrentTub(tub.encoded_id)}><Link to={`/tubs/${tub.encoded_id}`}>{tub.encoded_id}</Link></li>)}
+          {tubs.map(tub => <li key={tub.encoded_id} ><Link to={`/tubs/${tub.encoded_id}`}>{tub.encoded_id}</Link></li>)}
         </ul>
       </div>
     </div>
   )
 }
 
-export default function Home({setCurrentTub}) {
-  const [tubs, setTubs] = useState([])
+export default function Home() {
+  const [tubs, setTubs] = useState<Tub[]>([])
   const [displayModal, setDisplayModal] = useState(false)
   const [newTubId, setNewTubId] = useState(null)
 
@@ -41,16 +41,9 @@ export default function Home({setCurrentTub}) {
       })
   }, [])
 
-  function handleClick(e) {
+  const handleClick: ButtonClickHandler = (e) => {
     e.preventDefault()
-    // tubService.createTub()
-    setDisplayModal(true)
-    console.log('CREATED A TUB')
-    // tubService.createTub().then(tub => {
-    // setTubs(tubs.concat(tub))
-    // setNewTubId(tub.encoded_id)
-    // })
-    
+    tubService.createTub().then(tub => setTubs(tubs.concat(tub)))
   }
 
   const handleClose = () => {
@@ -62,7 +55,7 @@ export default function Home({setCurrentTub}) {
     <>
       <PageHeader />
       <div className="homepage">
-        <MyTubs setCurrentTub={setCurrentTub} tubs={tubs}/>
+        <MyTubs tubs={tubs}/>
         <NewTub onClick={handleClick}/>
       </div>
       {displayModal && <Modal onClose={handleClose} newTubId={newTubId}/>}

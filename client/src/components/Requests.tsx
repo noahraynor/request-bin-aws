@@ -1,22 +1,36 @@
-import requestsData from '../data/requests.json'
 import PageHeader from './PageHeader'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import tubService from '../services/tubService'
+import { useParams } from 'react-router-dom'
 import copyImg from '../assets/copy.png'
+import type { Request, RequestHeaderProps, RequestProps, ToggleInfoProps } from '../types'
 
-export default function Requests({currentTub}) {
-  const requests = requestsData.requests
-  // const requests = tubService.getRequest().then(requests => requests)
+
+export default function Requests() {
+  const { encoded_id } = useParams<{ encoded_id: string}>()
+  const [requests, setRequests] = useState<Request[]>([])
+
+  useEffect(() => {
+    if (!encoded_id) return
+
+    tubService.getRequests(encoded_id)
+    .then(requests => setRequests(requests))
+    .catch(err => console.error('Failed to fetch requests:', err))
+  }, [encoded_id])
+
+  if (!encoded_id) return <p>Error: Missing Tub Id.</p>
   
+  console.log(requests)
   return (
     <>
       <PageHeader />
-      <RequestHeader currentTub={currentTub}/>
-      {requests.map(request => <Request key={request.request_id} request={request}/>)}
+      <RequestHeader encoded_id={encoded_id} requestsLength={requests.length} />
+      {requests.map(request => <Request key={request.id} request={request}/>)}
     </>
   )
 }
 
-function ToggleInfo({ title, children }) {
+function ToggleInfo({ title, children }: ToggleInfoProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -29,14 +43,16 @@ function ToggleInfo({ title, children }) {
   );
 }
 
-function Request({request}) {
+function Request({request}: RequestProps) {
   const methodClass = `${request.method.toLowerCase()}`
+  const date = new Date(request.timestamp).toLocaleDateString()
+  const time = new Date(request.timestamp).toLocaleTimeString()
 
   return (
     <div className={"request"}>
       <div className={`method ${methodClass}`}>METHOD: {request.method}</div>
-      <div>TIME: {request.time}</div>
-      <div>DATE: {request.date}</div>
+      <div>DATE: {date}</div>
+      <div>TIME: {time}</div>
       <div>
         <ToggleInfo title="Headers">
           <p>{JSON.stringify(request.headers)}</p>
@@ -59,10 +75,9 @@ function GreenCheckbox() {
   )
 }
 
-function RequestHeader({currentTub}) {
+function RequestHeader({ encoded_id, requestsLength}: RequestHeaderProps) {
   const [displayCheck, setDisplayCheck] = useState(false)
-  const requestsLength = requestsData.requests.length
-  const url = `${window.location.host}/recieve/${currentTub}`
+  const url = `https://${window.location.host}/receive/${encoded_id}`
 
   const handleCopy = () => {
     navigator.clipboard.writeText(url).then(() => setDisplayCheck(true))
@@ -70,7 +85,7 @@ function RequestHeader({currentTub}) {
 
   return (
     <div>
-      <h1>{`Tub: ${currentTub}`}</h1>
+      <h2>{`Current Tub: ${encoded_id}`}</h2>
       <div>
         Requests are collected at 
         <span className="tub-url">{url}</span>{}

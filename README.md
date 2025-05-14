@@ -11,4 +11,6 @@ use npm run dev in server folder to start backend
 navigate to http://localhost:3000/ping  
   
 
-frontend currently not linked to backend
+Frontend served through the backend on ngrok.
+Follow ngrok url which is logged when backend is started and can add webhooks.
+When updates are made to frontend, need to run `npm run build`.
