@@ -1,4 +1,14 @@
 # Request Tubs Backend (Express + PostgreSQL + MongoDB)
+Noah
+- Refactor get requests
+- Add delete routes
+
+
+Alex
+- Start typing
+- Create hash functions at the top or bottom of routes file
+
+
 
 # Setup postgreSQL Database
 
