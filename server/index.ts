@@ -4,6 +4,7 @@ import ngrok from 'ngrok'
 import pool from './src/db'
 import { db } from './src/mongo';
 import Hashids from 'hashids';
+import { ObjectId } from 'mongodb';
 
 const app = express();
 app.use(express.json());
@@ -16,6 +17,7 @@ const hashids = new Hashids('tubs-secret-salt-val', 6)
 app.get('/api/mongo-test', async (req, res) => {
   try {
     // collection variable is assigned to a MongoDB cursor
+    // for some reason this is synchronous, not executing yet
     const collection = db.collection('bodies');
     // converts the cursor to an array of MongoDB documents (as javascript objects)
     const items = await collection.find().toArray();
@@ -46,18 +48,32 @@ app.get('/api/tubs/:id/requests', async (req, res) => {
     const result = await pool.query(`SELECT * FROM requests WHERE tub_id=$1`, [decoded_id]);
     const sqlRequests = result.rows;
     console.log(sqlRequests);
-
-    const body = { fakedata: "test", fakedata2: "test2" };
     
-    let requests = sqlRequests.map(request => {
-      return {
-        id: request.id,
-        method: request.method,
-        headers: request.headers,
-        timestamp: new Date(request.received_at),
-        body: body,
-      };
-    });
+    const requests = await Promise.all(
+      sqlRequests.map(async (request) => {
+
+        //let body_id = request.body_id;
+        let body_id = '682272e2f5dd2b9ccb6b140d';
+
+        if (!ObjectId.isValid(body_id)) {
+          console.warn(`Invalid ObjectId: ${body_id}`);
+          return null;
+        }
+
+        let bodyMongoID = new ObjectId(body_id);
+
+        const collection = db.collection('bodies');
+        const document = await collection.findOne({ _id: bodyMongoID });
+
+        return {
+          id: request.id,
+          method: request.method,
+          headers: request.headers,
+          timestamp: new Date(request.received_at),
+          body: document!.body,
+        };
+      })
+    );
 
     res.json(requests);
   } catch (err) {
@@ -72,7 +88,7 @@ interface Request {
   method: string;
   headers: { [key: string]: string };
   timestamp: Date;
-  body: string;
+  body: { [key: string]: string };
 }
 
 // Creates a new tub

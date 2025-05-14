@@ -94,11 +94,8 @@ sudo systemctl status mongod
 mongosh
 -new mongodb shell
 
-show dbs
--shows all existing databases
-
 use requesttub
--Switch to (or create if it doesn’t exist) a database called requestbin
+-Switch to (or create if it doesn’t exist) a database called requesttub
 
 db.bodies.insertOne({ body: { bodydata1: "fake", bodydata2: "also fake" } })
 db.bodies.insertOne({ body: { bodydata1: "fake again", bodydata2: "also more fake"} })
