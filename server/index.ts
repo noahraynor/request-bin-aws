@@ -14,22 +14,7 @@ app.use(express.json());
 const PORT = 3000;
 const hashids = new Hashids('tubs-secret-salt-val', 6)
 
-//Test mongo db
-app.get('/api/mongo-test', async (req, res) => {
-  try {
-    // collection variable is assigned to a MongoDB cursor
-    // for some reason this is synchronous, not executing yet
-    const collection = db.collection('bodies');
-    // converts the cursor to an array of MongoDB documents (as javascript objects)
-    const items = await collection.find().toArray();
-    res.json(items);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'MongoDB error' });
-  }
-});
-
-//Test PSQL
+// Returns and array of tub objects
 app.get('/api/tubs', async (req, res) => {
   try {
     const result = await pool.query('SELECT encoded_id FROM tubs');
@@ -132,34 +117,6 @@ app.all('/receive/:id', async (req, res) => {
   } catch (error) {
     console.error(error)
     res.status(500).json({error: "Database failed to create a new request"})
-  }
-});
-
-interface Tunnel {
-  name: string;
-  public_url: string;
-  proto: string;
-}
-
-interface NgrokApiResponse {
-  tunnels: Tunnel[];
-}
-
-// Endpoint to get current ngrok public URL
-app.get('/api/ngrok-url', async (req, res) => {
-  try {
-    const response = await axios.get<NgrokApiResponse>('http://127.0.0.1:4040/api/tunnels');
-    const httpsTunnel = response.data.tunnels.find(t => t.proto === 'https');
-    const publicUrl = httpsTunnel?.public_url || null;
-
-    if (publicUrl) {
-      res.json({ publicUrl });
-    } else {
-      res.status(404).json({ error: 'No HTTPS tunnel found' });
-    }
-  } catch (err) {
-    console.error('Error fetching ngrok URL:', (err as Error).message);
-    res.status(500).json({ error: 'Failed to retrieve ngrok URL' });
   }
 });
 
