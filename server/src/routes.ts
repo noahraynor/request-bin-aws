@@ -2,9 +2,10 @@ import { Request, Response } from "express";
 import pool from './database/db';
 import { QueryResult } from 'pg';
 import { db } from './database/mongo';
-import Hashids from 'hashids';
+import Hashids = require('hashids');
 import { ObjectId } from 'mongodb';
 import { FrontFacingTub, SQLTubRequest, FrontFacingTubRequest } from "./types";
+
 
 const express = require('express');
 const router = express.Router();
@@ -92,16 +93,16 @@ router.get('/api/tubs/:id/requests', async (req: Request, res: Response) => {
 
 // Delete a request by request_id
 // This should match primary key in requests database SQL
-router.delete('/api/requests/:request_id', async (req: Request, res: Response) => {
+router.delete('/api/requests/:request_id', async (req: Request, res: Response): Promise<Response> => {
   try {
-    const request_id = req.params.request_id;
+    const request_id: string = req.params.request_id;
 
     // Delete request from SQL
     // ALSO save body_id
     const result = await pool.query(`DELETE FROM requests WHERE id=$1 RETURNING body_id`, [request_id]);
     if (result.rowCount! < 1) {
       console.log('No matching request found. Nothing deleted.');
-      res.status(404).json({ error: 'Request not found' });
+      return res.status(404).json({ error: 'Request not found' });
     }
 
     // Delete body from Mongo
@@ -114,16 +115,16 @@ router.delete('/api/requests/:request_id', async (req: Request, res: Response) =
     const result2 = await collection.deleteOne({ _id: new ObjectId(body_id) });
     if (result2.deletedCount < 1) {
       console.log('No matching body found. Nothing deleted.');
-      res.status(404).json({ error: 'Body not found' });
+      return res.status(404).json({ error: 'Body not found' });
     }
 
     // Success from Mongo and SQL!
     console.log('Delete successful!');
-    res.sendStatus(204); // No Content
+    return res.sendStatus(204); // No Content
     
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Unexpected error, maybe db connection issue" });
+    return res.status(500).json({ error: "Unexpected error, maybe db connection issue" });
   }
 });
 
