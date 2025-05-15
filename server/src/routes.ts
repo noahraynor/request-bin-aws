@@ -127,6 +127,27 @@ router.delete('/api/requests/:request_id', async (req: Request, res: Response) =
   }
 });
 
+// Delete a tub
+router.delete('/api/tubs/:id', async (req: Request, res: Response): Promise<void> => {
+  const tubId = req.params.id;
+  const internalTubId = decodeEncodedId(tubId)
+
+  try {
+    const resultTubs = await pool.query(`DELETE FROM tubs WHERE encoded_id=$1`, [tubId]);
+
+    if (resultTubs.rowCount === 0) {
+      res.status(404).json({ error: "Tub not found." });
+      return;
+    }
+
+    console.log("Successful deletion")
+    res.sendStatus(204)
+  } catch (error) {
+    console.error("Error deleting tub:", error);
+    res.status(500).json({ error: "Error deleting tub from db." })
+  }
+});
+
 // Creates a new tub
 router.post('/api/tubs', async (_req: Request, res: Response) => {
   console.log('creating a new tub')

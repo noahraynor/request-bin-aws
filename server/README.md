@@ -53,7 +53,7 @@ CREATE TABLE requests (
   headers JSONB,
   body_id TEXT,
   received_at TIMESTAMPTZ DEFAULT NOW(),
-  CONSTRAINT fk_tub FOREIGN KEY (tub_id) REFERENCES tubs(id)
+  CONSTRAINT fk_tub FOREIGN KEY (tub_id) REFERENCES tubs(id) ON DELETE CASCADE
 );
 
 
