@@ -1,6 +1,6 @@
 // server/src/db/mongo.ts
 import { MongoClient } from 'mongodb';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
 dotenv.config();
 
