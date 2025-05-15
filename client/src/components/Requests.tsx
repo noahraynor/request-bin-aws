@@ -14,7 +14,13 @@ export default function Requests() {
     if (!encoded_id) return
 
     tubService.getRequests(encoded_id)
-    .then(requests => setRequests(requests))
+    .then(requests => {
+      const sorted = [...requests].sort((a, b) => {
+        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+      })
+
+      setRequests(sorted)
+    })
     .catch(err => console.error('Failed to fetch requests:', err))
   }, [encoded_id])
 
@@ -103,6 +109,9 @@ function RequestHeader({ encoded_id, requestsLength}: RequestHeaderProps) {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(url).then(() => setDisplayCheck(true))
+    setTimeout(() => {
+      setDisplayCheck(false)
+    }, 2500)
   }
 
   return (
@@ -112,9 +121,18 @@ function RequestHeader({ encoded_id, requestsLength}: RequestHeaderProps) {
         Requests are collected at 
         <span className="tub-url">{url}</span>{}
         <span className="url-plus-checkbox">
-          <img src={copyImg} className='copy-image' onClick={handleCopy}></img>
-          {displayCheck && <GreenCheckbox />}
+        <span className="icon-wrapper">
+          <img
+            src={copyImg}
+            className={`copy-image ${displayCheck ? 'hidden' : ''}`}
+            onClick={handleCopy}
+          />
+          <div className={`green-check ${displayCheck ? '' : 'hidden'}`}>
+            <GreenCheckbox />
+          </div>
         </span>
+      </span>
+
       </div>
       <span>Total Requests: {requestsLength}</span>
       <br></br>
