@@ -54,7 +54,6 @@ export default function Home() {
     setDisplayModal(false)
   }
 
-
   return (
     <>
       <PageHeader />
@@ -62,7 +61,7 @@ export default function Home() {
         <MyTubs tubs={tubs}/>
         <NewTub onClick={handleClick}/>
       </div>
-      {displayModal && <Modal onClose={handleClose} newTubId={newTubId}/>}
+      {displayModal && newTubId && <Modal onClose={handleClose} newTubId={newTubId}/>}
     </>
 
   )
