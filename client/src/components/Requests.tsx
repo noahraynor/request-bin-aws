@@ -19,8 +19,7 @@ export default function Requests() {
   }, [encoded_id])
 
   if (!encoded_id) return <p>Error: Missing Tub Id.</p>
-  
-  console.log(requests)
+
   return (
     <>
       <PageHeader />
