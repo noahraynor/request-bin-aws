@@ -5,6 +5,7 @@ import { db } from './database/mongo';
 import Hashids = require('hashids');
 import { ObjectId } from 'mongodb';
 import { FrontFacingTub, SQLTubRequest, FrontFacingTubRequest } from "./types";
+import { DeleteResult } from 'mongodb';
 
 
 const express = require('express');
@@ -91,6 +92,10 @@ router.get('/api/tubs/:id/requests', async (req: Request, res: Response) => {
   }
 });
 
+type DeletedRequestRow = {
+  body_id: string;
+};
+
 // Delete a request by request_id
 // This should match primary key in requests database SQL
 router.delete('/api/requests/:request_id', async (req: Request, res: Response): Promise<Response> => {
@@ -99,8 +104,8 @@ router.delete('/api/requests/:request_id', async (req: Request, res: Response): 
 
     // Delete request from SQL
     // ALSO save body_id
-    const result = await pool.query(`DELETE FROM requests WHERE id=$1 RETURNING body_id`, [request_id]);
-    if (result.rowCount! < 1) {
+    const result = await pool.query<DeletedRequestRow>(`DELETE FROM requests WHERE id=$1 RETURNING body_id`, [request_id]);
+    if (!result.rowCount || result.rowCount < 1) {
       console.log('No matching request found. Nothing deleted.');
       return res.status(404).json({ error: 'Request not found' });
     }
@@ -112,7 +117,7 @@ router.delete('/api/requests/:request_id', async (req: Request, res: Response): 
       return res.status(400).json({ error: 'Invalid body_id' });
     }
     const collection = db.collection('bodies');
-    const result2 = await collection.deleteOne({ _id: new ObjectId(body_id) });
+    const result2: DeleteResult = await collection.deleteOne({ _id: new ObjectId(body_id) });
     if (result2.deletedCount < 1) {
       console.log('No matching body found. Nothing deleted.');
       return res.status(404).json({ error: 'Body not found' });
