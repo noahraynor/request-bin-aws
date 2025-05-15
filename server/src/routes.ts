@@ -32,7 +32,7 @@ function decodeEncodedId(encodedId: string): string | null {
 // Returns and array of tub objects
 router.get('/api/tubs', async (_req: Request, res: Response): Promise<void> => {
   try {
-    const result = await pool.query<FrontFacingTub>('SELECT encoded_id FROM tubs');
+    const result = await pool.query<FrontFacingTub>('SELECT encoded_id, name, date_created FROM tubs');
     console.log(result);
     res.json(result.rows);
   } catch (err) {
@@ -127,20 +127,53 @@ router.delete('/api/requests/:request_id', async (req: Request, res: Response) =
   }
 });
 
+// Delete a tub
+router.delete('/api/tubs/:id', async (req: Request, res: Response): Promise<void> => {
+  const tubId = req.params.id;
+  const internalTubId = decodeEncodedId(tubId)
+
+  try {
+    const resultTubs = await pool.query(`DELETE FROM tubs WHERE encoded_id=$1`, [tubId]);
+
+    if (resultTubs.rowCount === 0) {
+      res.status(404).json({ error: "Tub not found." });
+      return;
+    }
+
+    console.log("Successful deletion")
+    res.sendStatus(204)
+  } catch (error) {
+    console.error("Error deleting tub:", error);
+    res.status(500).json({ error: "Error deleting tub from db." })
+  }
+});
+
 // Creates a new tub
-router.post('/api/tubs', async (_req: Request, res: Response) => {
+router.post('/api/tubs', async (req: Request, res: Response) => {
   console.log('creating a new tub')
+
   try {
     const idResult: QueryResult<{ nextval: string }> = await pool.query("SELECT nextval('tubs_id_seq')");
     const internalId = idResult.rows[0].nextval
-
     const encoded_id = encodeInternalId(internalId);
-    await pool.query(
-      `INSERT INTO tubs (id, encoded_id)
-       VALUES ($1, $2)`, [internalId, encoded_id])
 
+    let tubName = encoded_id
+
+    if (req.body && typeof req.body.name === "string" &&  req.body.name !== '') {
+      tubName = req.body.name
+    }
+
+    const result = await pool.query<FrontFacingTub>(
+      `INSERT INTO tubs (id, encoded_id, name)
+       VALUES ($1, $2, $3)
+       RETURNING encoded_id, name, date_created`, [internalId, encoded_id, tubName])
+
+    if (result.rows.length === 0) {
+      res.status(500).json({ error: "Failed to create tub." });
+      return
+    }
     console.log('New tub created with id: ', encoded_id);
-    res.json({ encoded_id: encoded_id });
+    res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Database failed to create new tub" });

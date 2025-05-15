@@ -1,8 +1,10 @@
 import { NumberLike } from "hashids/cjs/util";
 
 interface Tub {
-  id: number
-  encoded_id: string
+  id: number;
+  encoded_id: string;
+  name: string;
+  date_created: string;
 }
 
 // Example request type:
@@ -23,4 +25,9 @@ export interface SQLTubRequest {
   received_at: string;
 }
 
-export type FrontFacingTub = Pick<Tub, 'encoded_id'>
+export interface TubPostRequestBody {
+  name: string;
+}
+
+
+export type FrontFacingTub = Omit<Tub, 'id'>

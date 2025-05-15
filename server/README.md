@@ -41,6 +41,8 @@ psql -U dev_user -d dev_db
 CREATE TABLE tubs (
   id SERIAL PRIMARY KEY,
   encoded_id TEXT NOT NULL,
+  name TEXT,
+  date_created TIMESTAMPTZ DEFAULT NOW(),
   CONSTRAINT encoded_id_format CHECK (
     encoded_id ~ '^[a-zA-Z0-9]{6}$'
   )
@@ -53,7 +55,7 @@ CREATE TABLE requests (
   headers JSONB,
   body_id TEXT,
   received_at TIMESTAMPTZ DEFAULT NOW(),
-  CONSTRAINT fk_tub FOREIGN KEY (tub_id) REFERENCES tubs(id)
+  CONSTRAINT fk_tub FOREIGN KEY (tub_id) REFERENCES tubs(id) ON DELETE CASCADE
 );
 
 
