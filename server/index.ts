@@ -10,7 +10,17 @@ app.use('/', router)
 const PORT = 3000;
 
 const CLIENT_DIST_PATH = path.join(__dirname, '..', 'client', 'dist');
+const CLIENT_INDEX_PATH = path.join(CLIENT_DIST_PATH, 'index.html')
 app.use(express.static(CLIENT_DIST_PATH));
+
+app.get(/.*/, (req, res) => {
+  // Only serve index.html for non-API routes
+  if (!req.path.startsWith('/api/') && !req.path.startsWith('/receive/')) {
+    res.sendFile(CLIENT_INDEX_PATH)
+  } else {
+    res.status(404).json({ error: 'Not found' })
+  }
+})
 
 app.listen(PORT, async () => {
   console.log(`Server running on port ${PORT}`);
