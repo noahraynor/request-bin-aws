@@ -41,6 +41,8 @@ psql -U dev_user -d dev_db
 CREATE TABLE tubs (
   id SERIAL PRIMARY KEY,
   encoded_id TEXT NOT NULL,
+  name TEXT,
+  date_created TIMESTAMPTZ DEFAULT NOW(),
   CONSTRAINT encoded_id_format CHECK (
     encoded_id ~ '^[a-zA-Z0-9]{6}$'
   )
