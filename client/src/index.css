@@ -196,6 +196,7 @@ button:focus-visible {
   margin-left: 0.5em;
   /* display: inline-block; */
   transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .copy-image:hover {
@@ -209,21 +210,22 @@ button:focus-visible {
   width: 20px;
   height: 20px;
   border: 2px solid green;
-  margin-left: 4px;
+  margin-left: 0.5em;
+  /* margin-left: 4px; */
   border-radius: 4px;
   background-color: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transform: translateY(8px) scale(1.1);
+  transform: translateY(-23px) scale(1.1);
   animation: checkboxFadeIn 0.15s ease-out forwards;
 }
 
 @keyframes checkboxFadeIn {
   to {
     opacity: 1;
-    transform: translateY(8px) scale(1.1);
+    transform: translateY(-23px) scale(1.1);
   }
 }
 
@@ -273,4 +275,16 @@ button:focus-visible {
   margin-top: 2rem;
   display: flex;
   justify-content: center;
+}
+
+.icon-wrapper {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
 }

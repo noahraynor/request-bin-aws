@@ -81,6 +81,9 @@ function RequestHeader({ encoded_id, requestsLength}: RequestHeaderProps) {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(url).then(() => setDisplayCheck(true))
+    setTimeout(() => {
+      setDisplayCheck(false)
+    }, 2500)
   }
 
   return (
@@ -90,9 +93,18 @@ function RequestHeader({ encoded_id, requestsLength}: RequestHeaderProps) {
         Requests are collected at 
         <span className="tub-url">{url}</span>{}
         <span className="url-plus-checkbox">
-          <img src={copyImg} className='copy-image' onClick={handleCopy}></img>
-          {displayCheck && <GreenCheckbox />}
+        <span className="icon-wrapper">
+          <img
+            src={copyImg}
+            className={`copy-image ${displayCheck ? 'hidden' : ''}`}
+            onClick={handleCopy}
+          />
+          <div className={`green-check ${displayCheck ? '' : 'hidden'}`}>
+            <GreenCheckbox />
+          </div>
         </span>
+      </span>
+
       </div>
       <span>Total Requests: {requestsLength}</span>
       <br></br>
