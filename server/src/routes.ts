@@ -12,6 +12,21 @@ const HASH_LENGTH = 6                     // DO NOT CHANGE!!!
 
 const hashids = new Hashids(SALT_VALUE, HASH_LENGTH) 
 
+function encodeInternalId(internalId: string): string {
+  return hashids.encode(internalId)
+}
+
+function decodeEncodedId(encodedId: string): string | null {
+  const decoded = hashids.decode(encodedId);
+  const value = decoded[0];
+
+  if (typeof value === 'number' || typeof value === 'bigint') {
+    return value.toString();
+  }
+
+  return null;
+}
+
 // Returns and array of tub objects
 router.get('/api/tubs', async (_req: Request, res: Response) => {
   try {
@@ -27,7 +42,8 @@ router.get('/api/tubs', async (_req: Request, res: Response) => {
 router.get('/api/tubs/:id/requests', async (req: Request, res: Response) => {
   try {
     const encoded_id = req.params.id;
-    const decoded_id = hashids.decode(encoded_id)[0];
+    
+    const decoded_id = decodeEncodedId(encoded_id)
     const result = await pool.query(`SELECT * FROM requests WHERE tub_id=$1`, [decoded_id]);
     const sqlRequests = result.rows;
     console.log(sqlRequests);
@@ -117,7 +133,7 @@ router.post('/api/tubs', async (_req: Request, res: Response) => {
     const idResult = await pool.query("SELECT nextval('tubs_id_seq')");
     const internalId = idResult.rows[0].nextval
 
-    const encoded_id = hashids.encode(internalId)
+    const encoded_id = encodeInternalId(internalId)
     await pool.query(
       `INSERT INTO tubs (id, encoded_id)
        VALUES ($1, $2)`, [internalId, encoded_id])
@@ -134,7 +150,7 @@ router.post('/api/tubs', async (_req: Request, res: Response) => {
 // Endpoint for all webhooks requests.
 router.all('/receive/:id', async (req: Request, res: Response) => {
   const encoded_id = req.params.id
-  const decoded_id = hashids.decode(encoded_id)[0];
+  const decoded_id = decodeEncodedId(encoded_id)
   try {
     // Insert body to mongo
     const collection = db.collection('bodies');
