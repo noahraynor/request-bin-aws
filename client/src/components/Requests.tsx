@@ -14,7 +14,13 @@ export default function Requests() {
     if (!encoded_id) return
 
     tubService.getRequests(encoded_id)
-    .then(requests => setRequests(requests))
+    .then(requests => {
+      const sorted = [...requests].sort((a, b) => {
+        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+      })
+
+      setRequests(sorted)
+    })
     .catch(err => console.error('Failed to fetch requests:', err))
   }, [encoded_id])
 
