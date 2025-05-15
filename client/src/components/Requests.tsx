@@ -25,7 +25,13 @@ export default function Requests() {
     <>
       <PageHeader />
       <RequestHeader encoded_id={encoded_id} requestsLength={requests.length} />
-      {requests.map(request => <Request key={request.id} request={request}/>)}
+      {requests.map(request => (
+        <Request
+          key={request.id}
+          request={request}
+          onDelete={(id) => setRequests(prev => prev.filter(r => r.id !== id))}
+        />
+      ))}
     </>
   )
 }
@@ -43,10 +49,20 @@ function ToggleInfo({ title, children }: ToggleInfoProps) {
   );
 }
 
-function Request({request}: RequestProps) {
+function Request({request, onDelete}: RequestProps) {
   const methodClass = `${request.method.toLowerCase()}`
   const date = new Date(request.timestamp).toLocaleDateString()
   const time = new Date(request.timestamp).toLocaleTimeString()
+
+  const handleDelete = async () => {
+    try {
+      await tubService.deleteRequest(request.id)
+      console.log('Request deleted')
+      if (onDelete) onDelete(request.id)
+    } catch (err) {
+      console.error('Error deleting request:', err)
+    }
+  }
 
   return (
     <div className={"request"}>
@@ -67,6 +83,9 @@ function Request({request}: RequestProps) {
           </pre>
         </ToggleInfo>
       </div>
+      <button className="delete-button" onClick={handleDelete}>
+        Delete Request
+      </button>
     </div>
   )
 }
