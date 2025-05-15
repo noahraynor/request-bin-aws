@@ -20,6 +20,7 @@ export interface MyTubsProps {
 
 export interface RequestProps {
   request: Request;
+  onDelete?: (id: number) => void
 }
 
 export interface ToggleInfoProps {
