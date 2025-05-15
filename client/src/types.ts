@@ -32,3 +32,8 @@ export interface RequestHeaderProps {
   encoded_id: string;
   requestsLength: number;
 }
+
+export interface ModalProps {
+  onClose: () => void;
+  newTubId: number;
+}

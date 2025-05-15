@@ -1,7 +1,8 @@
 import ReactDOM from 'react-dom'
 import { useNavigate } from 'react-router-dom'
+import type { ModalProps } from '../types'
 
-export default function Modal({ onClose, newTubId }) {
+export default function Modal({ onClose, newTubId }: ModalProps) {
   const navigate = useNavigate()
 
   const handleOpenTub = () => {
