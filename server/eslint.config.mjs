@@ -4,14 +4,14 @@ import stylistic from "@stylistic/eslint-plugin";
 
 
 export default tseslint.config({
-  files: ['**/*.ts'],
-  extesends: [
+  files: ['src/**/*.ts'],
+  extends: [
     eslint.configs.recommended,
     ...tseslint.configs.recommendedTypeChecked,
   ],
   languageOptions: {
     parserOptions: {
-      project: true,
+      project: './tsconfig.json',
       tsconfigRootDir: import.meta.dirname,
     },
   },
