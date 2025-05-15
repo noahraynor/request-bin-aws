@@ -19,13 +19,18 @@ export default function Requests() {
   }, [encoded_id])
 
   if (!encoded_id) return <p>Error: Missing Tub Id.</p>
-  
-  console.log(requests)
+
   return (
     <>
       <PageHeader />
       <RequestHeader encoded_id={encoded_id} requestsLength={requests.length} />
-      {requests.map(request => <Request key={request.id} request={request}/>)}
+      {requests.map(request => (
+        <Request
+          key={request.id}
+          request={request}
+          onDelete={(id) => setRequests(prev => prev.filter(r => r.id !== id))}
+        />
+      ))}
     </>
   )
 }
@@ -43,10 +48,20 @@ function ToggleInfo({ title, children }: ToggleInfoProps) {
   );
 }
 
-function Request({request}: RequestProps) {
+function Request({request, onDelete}: RequestProps) {
   const methodClass = `${request.method.toLowerCase()}`
   const date = new Date(request.timestamp).toLocaleDateString()
   const time = new Date(request.timestamp).toLocaleTimeString()
+
+  const handleDelete = async () => {
+    try {
+      await tubService.deleteRequest(request.id)
+      console.log('Request deleted')
+      if (onDelete) onDelete(request.id)
+    } catch (err) {
+      console.error('Error deleting request:', err)
+    }
+  }
 
   return (
     <div className={"request"}>
@@ -55,14 +70,21 @@ function Request({request}: RequestProps) {
       <div>TIME: {time}</div>
       <div>
         <ToggleInfo title="Headers">
-          <p>{JSON.stringify(request.headers)}</p>
+          <pre>
+            <code>{JSON.stringify(request.headers, null, 2)}</code>
+          </pre>
         </ToggleInfo>
       </div>
       <div>
         <ToggleInfo title="Body">
-          <p>{JSON.stringify(request.body)}</p>
+          <pre>
+            <code>{JSON.stringify(request.body, null, 2)}</code>
+          </pre>
         </ToggleInfo>
       </div>
+      <button className="delete-button" onClick={handleDelete}>
+        Delete Request
+      </button>
     </div>
   )
 }

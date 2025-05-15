@@ -17,6 +17,11 @@ const createTub = () => {
   return request.then(response => response.data)
 }
 
+const deleteRequest = (requestId: number) => {
+  const request = axios.delete(`/api/requests/${requestId}`)
+  return request.then(response => response.data)
+}
+
 export default {
-  getAll, getRequests, createTub
+  getAll, getRequests, createTub, deleteRequest,
 }
