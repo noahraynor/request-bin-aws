@@ -141,7 +141,7 @@ button:focus-visible {
   padding: 1rem;
   border-radius: 4px;
   background-color: #1a1a1a;
-  width: 350px;
+  width: 220px;
   position: relative;
 }
 
@@ -177,6 +177,7 @@ button:focus-visible {
   background-image: url('assets/duck.png');
   background-size: contain;
   background-repeat: no-repeat;
+  margin-left: 0.6em;
 }
 
 .tub-url {
@@ -327,5 +328,20 @@ button:focus-visible {
 }
 
 .sort-container p {
+  cursor: pointer;
+}
+
+.trash-icon {
+  content: "";
+  display: inline-block;
+  left: 0;
+  top: 0.2em;
+  width: 1.2em;
+  height: 1.2em;
+  padding-right: 0.5em;
+  background-image: url('assets/trashBin.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-left: auto;
   cursor: pointer;
 }

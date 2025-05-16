@@ -18,6 +18,7 @@ export interface MyTubsProps {
   tubs: Tub[];
   newestFirst: boolean;
   onToggleSort: () => void;
+  onDelete: (tubId: string) => void;
 }
 
 export interface RequestProps {

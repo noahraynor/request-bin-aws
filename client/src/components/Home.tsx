@@ -5,6 +5,7 @@ import tubService from '../services/tubService'
 import Modal from './Modal'
 import type { ButtonClickHandler, NewTubProps, Tub, MyTubsProps } from '../types'
 import { sortTubs } from '../services/tubUtilities'
+import trashBinIcon from '../assets/trashBin.png'
 
 function NewTub({onClick}: NewTubProps) {
   return (
@@ -16,7 +17,7 @@ function NewTub({onClick}: NewTubProps) {
   )
 }
 
-function MyTubs({tubs, newestFirst, onToggleSort}: MyTubsProps) {
+function MyTubs({tubs, newestFirst, onToggleSort, onDelete}: MyTubsProps) {
   return (
     <div className="myTubs">
       <div className="myTubs-header">
@@ -28,7 +29,12 @@ function MyTubs({tubs, newestFirst, onToggleSort}: MyTubsProps) {
       </div>
       <div>
         <ul className="duck-list" id="baskets">
-          {tubs.map(tub => <li key={tub.encoded_id} ><Link to={`/tubs/${tub.encoded_id}`}>{tub.encoded_id}</Link></li>)}
+          {tubs.map((tub) => 
+              <li key={tub.encoded_id} >
+                <Link to={`/tubs/${tub.encoded_id}`}>{tub.encoded_id}</Link>
+                <img src={trashBinIcon} className="trash-icon" onClick={(e) => onDelete(e, tub.encoded_id)}/>
+              </li>)}
+              
         </ul>
       </div>
     </div>
@@ -68,11 +74,20 @@ export default function Home() {
     setTubs(sortTubs(tubs, newNewestFirst))
   }
 
+  const handleDelete = (e, tubId: string) => {
+    e.preventDefault()
+    tubService
+      .deleteTub(tubId)
+      .then(() => {
+        setTubs(prev => prev.filter(tub => tub.encoded_id !== tubId))
+      })
+  }
+
   return (
     <>
       <PageHeader />
       <div className="homepage">
-        <MyTubs tubs={tubs} newestFirst={newestFirst} onToggleSort={handleSortToggle}/>
+        <MyTubs tubs={tubs} newestFirst={newestFirst} onToggleSort={handleSortToggle} onDelete={handleDelete}/>
         <NewTub onClick={handleClick} />
       </div>
       {displayModal && newTubId && <Modal onClose={handleClose} newTubId={newTubId}/>}

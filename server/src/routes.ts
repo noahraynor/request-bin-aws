@@ -134,10 +134,10 @@ router.delete('/api/requests/:request_id', async (req: Request, res: Response): 
 // Delete a tub
 router.delete('/api/tubs/:id', async (req: Request, res: Response): Promise<void> => {
   const tubId = req.params.id;
-  //const internalTubId = decodeEncodedId(tubId)
+  const internalTubId = decodeEncodedId(tubId)
 
   try {
-    const resultTubs = await pool.query(`DELETE FROM tubs WHERE encoded_id=$1`, [tubId]);
+    const resultTubs = await pool.query(`DELETE FROM tubs WHERE id=$1`, [internalTubId]);
 
     if (resultTubs.rowCount === 0) {
       res.status(404).json({ error: "Tub not found." });
