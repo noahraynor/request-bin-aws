@@ -1,5 +1,3 @@
-import { NumberLike } from "hashids/cjs/util";
-
 interface Tub {
   id: number;
   encoded_id: string;
@@ -7,7 +5,10 @@ interface Tub {
   date_created: string;
 }
 
-// Example request type:
+export type DeletedRequestRow = {
+  body_id: string;
+};
+
 export interface FrontFacingTubRequest {
   id: number;
   method: string;

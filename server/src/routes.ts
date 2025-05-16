@@ -4,16 +4,15 @@ import { QueryResult } from 'pg';
 import { db } from './database/mongo';
 import Hashids = require('hashids');
 import { ObjectId } from 'mongodb';
-import { FrontFacingTub, SQLTubRequest, FrontFacingTubRequest } from "./types";
+import { FrontFacingTub, SQLTubRequest, FrontFacingTubRequest, DeletedRequestRow } from "./types";
 import { DeleteResult } from 'mongodb';
-
 
 const express = require('express');
 const router = express.Router();
 
+// Set up hashing
 const SALT_VALUE = 'tubs-secret-salt-val'; // DO NOT CHANGE!!!
 const HASH_LENGTH = 6;                     // DO NOT CHANGE!!!
-
 const hashids = new Hashids(SALT_VALUE, HASH_LENGTH);
 
 function encodeInternalId(internalId: string): string {
@@ -31,7 +30,8 @@ function decodeEncodedId(encodedId: string): string | null {
   return null;
 }
 
-// Returns and array of tub objects
+// Returns an array of tub objects (no requsts inside)
+// Encoded id and date created
 router.get('/api/tubs', async (_req: Request, res: Response): Promise<void> => {
   try {
     const result = await pool.query<FrontFacingTub>('SELECT encoded_id, name, date_created FROM tubs');
@@ -43,23 +43,24 @@ router.get('/api/tubs', async (_req: Request, res: Response): Promise<void> => {
   }
 });
 
-// Returns an array of all requests for a specific tub with encoded_id: id
+// Returns an array of all requests for a specific tub of specific encoded ID
+// Pulls method, headers, and timestamp from postgreSQL
+// Pulls body from mongoDB
 router.get('/api/tubs/:id/requests', async (req: Request, res: Response) => {
   const encoded_id = req.params.id;
+  // Decode the id
   const decoded_id = decodeEncodedId(encoded_id);
-
-  if (!decoded_id) { // It is possible to differentiate between prod and dev to add more clarity
+  if (!decoded_id) { 
     res.status(400).json({ error: 'Invalid tub id' });
     return;
   }
-
   try {
+    // 
     const result = await pool.query<SQLTubRequest>(
       `SELECT * FROM requests WHERE tub_id=$1`, [decoded_id]);
     const sqlRequests = result.rows;
     console.log(sqlRequests);
 
-    // [AH] Revisit this typing on requests ------------------------------------------------
     const requests: (FrontFacingTubRequest | null)[] = await Promise.all( 
       sqlRequests.map(async (request) => {
 
@@ -92,18 +93,15 @@ router.get('/api/tubs/:id/requests', async (req: Request, res: Response) => {
   }
 });
 
-type DeletedRequestRow = {
-  body_id: string;
-};
+
 
 // Delete a request by request_id
-// This should match primary key in requests database SQL
 router.delete('/api/requests/:request_id', async (req: Request, res: Response): Promise<Response> => {
   try {
     const request_id: string = req.params.request_id;
 
     // Delete request from SQL
-    // ALSO save body_id
+    // ALSO save body_id (used to delete from Mongo)
     const result = await pool.query<DeletedRequestRow>(`DELETE FROM requests WHERE id=$1 RETURNING body_id`, [request_id]);
     if (!result.rowCount || result.rowCount < 1) {
       console.log('No matching request found. Nothing deleted.');
@@ -136,7 +134,7 @@ router.delete('/api/requests/:request_id', async (req: Request, res: Response): 
 // Delete a tub
 router.delete('/api/tubs/:id', async (req: Request, res: Response): Promise<void> => {
   const tubId = req.params.id;
-  const internalTubId = decodeEncodedId(tubId)
+  //const internalTubId = decodeEncodedId(tubId)
 
   try {
     const resultTubs = await pool.query(`DELETE FROM tubs WHERE encoded_id=$1`, [tubId]);
@@ -192,18 +190,18 @@ router.all('/receive/:id', async (req: Request, res: Response) => {
   const encoded_id = req.params.id;
   const decoded_id = decodeEncodedId(encoded_id);
 
-  if (!decoded_id) { // It is possible to differentiate between prod and dev to add more clarity
+  if (!decoded_id) { 
     res.status(400).json({ error: 'Invalid tub id' });
     return;
   }
 
   try {
-    // Insert body to mongo
+    // Insert body to MongoDB
     const collection = db.collection('bodies');
-    const mongoResult = await collection.insertOne({ body: req.body });
+    const mongoResult = await collection.insertOne( { body: req.body } );
     const mongoBodyId = mongoResult.insertedId.toString();
 
-    // Insert new request into sql
+    // Insert new request into SQL
     await pool.query(
       `INSERT INTO requests (tub_id, method, headers, body_id)
       VALUES ($1, $2, $3, $4)`,
