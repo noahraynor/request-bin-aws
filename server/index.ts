@@ -1,7 +1,7 @@
-import express from 'express';
-import ngrok from 'ngrok'
-import path from 'path';
-import router from './src/routes'
+import express, { Request, Response } from 'express';
+import * as ngrok from 'ngrok';
+import * as path from 'path';
+import router from './src/routes';
 
 const app = express();
 app.use(express.json());
@@ -13,7 +13,7 @@ const CLIENT_DIST_PATH = path.join(__dirname, '..', 'client', 'dist');
 const CLIENT_INDEX_PATH = path.join(CLIENT_DIST_PATH, 'index.html')
 app.use(express.static(CLIENT_DIST_PATH));
 
-app.get(/.*/, (req, res) => {
+app.get(/.*/, (req: Request, res: Response) => {
   // Only serve index.html for non-API routes
   if (!req.path.startsWith('/api/') && !req.path.startsWith('/receive/')) {
     res.sendFile(CLIENT_INDEX_PATH)
