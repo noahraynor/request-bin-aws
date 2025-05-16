@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import pool from './database/db';
+import pool from './database/sql';
 import { QueryResult } from 'pg';
 import { db } from './database/mongo';
 import Hashids = require('hashids');
