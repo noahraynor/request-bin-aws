@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import tubService from '../services/tubService'
 import Modal from './Modal'
 import type { ButtonClickHandler, NewTubProps, Tub, MyTubsProps } from '../types'
+import { sortTubs } from '../services/tubUtilities'
 
 function NewTub({onClick}: NewTubProps) {
   return (
@@ -15,10 +16,16 @@ function NewTub({onClick}: NewTubProps) {
   )
 }
 
-function MyTubs({tubs}: MyTubsProps) {
+function MyTubs({tubs, newestFirst, onToggleSort}: MyTubsProps) {
   return (
     <div className="myTubs">
-      <h2>My Tubs</h2>
+      <div className="myTubs-header">
+        <h2>My Tubs</h2>
+        <div className="sort-container">
+          <p className='sort-order' onClick={onToggleSort}>{newestFirst ? 'Newest First' : 'Oldest First'}</p>
+        </div>
+        
+      </div>
       <div>
         <ul className="duck-list" id="baskets">
           {tubs.map(tub => <li key={tub.encoded_id} ><Link to={`/tubs/${tub.encoded_id}`}>{tub.encoded_id}</Link></li>)}
@@ -32,19 +39,20 @@ export default function Home() {
   const [tubs, setTubs] = useState<Tub[]>([])
   const [displayModal, setDisplayModal] = useState(false)
   const [newTubId, setNewTubId] = useState(null)
+  const [newestFirst, setNewestFirst] = useState(true)
 
   useEffect(() => {
     tubService
       .getAll()
       .then(tubsData => {
-        setTubs(tubsData)
+        setTubs(sortTubs(tubsData, newestFirst))
       })
-  }, [])
+  }, [newestFirst])
 
   const handleClick: ButtonClickHandler = (e) => {
     e.preventDefault()
     tubService.createTub().then(tub => {
-      setTubs(tubs.concat(tub))
+      setTubs(sortTubs(tubs.concat(tub), newestFirst))
       setNewTubId(tub.encoded_id)
       setDisplayModal(true)
     })
@@ -54,12 +62,18 @@ export default function Home() {
     setDisplayModal(false)
   }
 
+  const handleSortToggle = () => {
+    setNewestFirst(!newestFirst)
+    const newNewestFirst = !newestFirst
+    setTubs(sortTubs(tubs, newNewestFirst))
+  }
+
   return (
     <>
       <PageHeader />
       <div className="homepage">
-        <MyTubs tubs={tubs}/>
-        <NewTub onClick={handleClick}/>
+        <MyTubs tubs={tubs} newestFirst={newestFirst} onToggleSort={handleSortToggle}/>
+        <NewTub onClick={handleClick} />
       </div>
       {displayModal && newTubId && <Modal onClose={handleClose} newTubId={newTubId}/>}
     </>

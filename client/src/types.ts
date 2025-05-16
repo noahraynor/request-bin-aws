@@ -1,4 +1,4 @@
-export type Tub = {encoded_id: string}
+export type Tub = {encoded_id: string, name: string, date_created: string}
 
 export interface Request {
   id: number,
@@ -15,7 +15,9 @@ export interface NewTubProps {
 }
 
 export interface MyTubsProps {
-  tubs: Tub[]
+  tubs: Tub[];
+  newestFirst: boolean;
+  onToggleSort: () => void;
 }
 
 export interface RequestProps {

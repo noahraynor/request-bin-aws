@@ -4,7 +4,7 @@ import tubService from '../services/tubService'
 import { useParams } from 'react-router-dom'
 import copyImg from '../assets/copy.png'
 import type { Request, RequestHeaderProps, RequestProps, ToggleInfoProps } from '../types'
-
+import GreenCheckbox from './GreenCheckbox'
 
 export default function Requests() {
   const { encoded_id } = useParams<{ encoded_id: string}>()
@@ -95,13 +95,7 @@ function Request({request, onDelete}: RequestProps) {
   )
 }
 
-function GreenCheckbox() {
-  return (
-    <div className="checkbox-container">
-      <div className="checkbox-checkmark" />
-    </div>
-  )
-}
+
 
 function RequestHeader({ encoded_id, requestsLength}: RequestHeaderProps) {
   const [displayCheck, setDisplayCheck] = useState(false)
