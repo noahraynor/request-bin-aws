@@ -137,7 +137,7 @@ router.delete('/api/tubs/:id', async (req: Request, res: Response): Promise<void
   const internalTubId = decodeEncodedId(tubId)
 
   try {
-    const resultTubs = await pool.query(`DELETE FROM tubs WHERE encoded_id=$1`, [internalTubId]);
+    const resultTubs = await pool.query(`DELETE FROM tubs WHERE id=$1`, [internalTubId]);
 
     if (resultTubs.rowCount === 0) {
       res.status(404).json({ error: "Tub not found." });

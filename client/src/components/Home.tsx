@@ -17,7 +17,7 @@ function NewTub({onClick}: NewTubProps) {
   )
 }
 
-function MyTubs({tubs, newestFirst, onToggleSort}: MyTubsProps) {
+function MyTubs({tubs, newestFirst, onToggleSort, onDelete}: MyTubsProps) {
   return (
     <div className="myTubs">
       <div className="myTubs-header">
@@ -32,7 +32,7 @@ function MyTubs({tubs, newestFirst, onToggleSort}: MyTubsProps) {
           {tubs.map((tub) => 
               <li key={tub.encoded_id} >
                 <Link to={`/tubs/${tub.encoded_id}`}>{tub.encoded_id}</Link>
-                <img src={trashBinIcon} class="trash-icon" />
+                <img src={trashBinIcon} className="trash-icon" onClick={(e) => onDelete(e, tub.encoded_id)}/>
               </li>)}
               
         </ul>
@@ -74,11 +74,21 @@ export default function Home() {
     setTubs(sortTubs(tubs, newNewestFirst))
   }
 
+  const handleDelete = (e, tubId: string) => {
+    e.preventDefault()
+    tubService
+      .deleteTub(tubId)
+      .then(() => {
+        console.log("deleted")
+        setTubs(prev => prev.filter(tub => tub.encoded_id !== tubId))
+      })
+  }
+
   return (
     <>
       <PageHeader />
       <div className="homepage">
-        <MyTubs tubs={tubs} newestFirst={newestFirst} onToggleSort={handleSortToggle}/>
+        <MyTubs tubs={tubs} newestFirst={newestFirst} onToggleSort={handleSortToggle} onDelete={handleDelete}/>
         <NewTub onClick={handleClick} />
       </div>
       {displayModal && newTubId && <Modal onClose={handleClose} newTubId={newTubId}/>}

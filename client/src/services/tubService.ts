@@ -22,7 +22,8 @@ const deleteRequest = (requestId: number) => {
   return request.then(response => response.status)
 }
 
-const deleteTub = (tubId: number) => {
+// '/api/tubs/:id'
+const deleteTub = (tubId: string) => {
   const request = axios.delete(`/api/tubs/${tubId}`)
   return request.then(response => response.status)
 }
