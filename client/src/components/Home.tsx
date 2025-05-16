@@ -32,7 +32,7 @@ function MyTubs({tubs, newestFirst, onToggleSort, onDelete}: MyTubsProps) {
           {tubs.map((tub) => 
               <li key={tub.encoded_id} >
                 <Link to={`/tubs/${tub.encoded_id}`}>{tub.encoded_id}</Link>
-                <img src={trashBinIcon} className="trash-icon" onClick={(e) => onDelete(e, tub.encoded_id)}/>
+                <img src={trashBinIcon} className="trash-icon" onClick={() => onDelete(tub.encoded_id)}/>
               </li>)}
               
         </ul>
@@ -74,8 +74,7 @@ export default function Home() {
     setTubs(sortTubs(tubs, newNewestFirst))
   }
 
-  const handleDelete = (e, tubId: string) => {
-    e.preventDefault()
+  const handleDelete = (tubId: string) => {
     tubService
       .deleteTub(tubId)
       .then(() => {
