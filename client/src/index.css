@@ -82,7 +82,7 @@ button:focus-visible {
 .method {
   font-family: monospace;
   padding: 4px 8px;
-  margin: 4px 0;
+  margin: 10px 0px 4px 0px;
   border-radius: 4px;
   display: inline-block;
   color: white;
@@ -289,7 +289,8 @@ button:focus-visible {
 }
 
 .delete-button {
-  margin-top: 12px;
+  margin-top: 6px;
+  margin-bottom: 12px;
   padding: 8px 12px;
   background-color: #cc0000;
   color: white;
