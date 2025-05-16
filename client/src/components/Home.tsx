@@ -79,7 +79,6 @@ export default function Home() {
     tubService
       .deleteTub(tubId)
       .then(() => {
-        console.log("deleted")
         setTubs(prev => prev.filter(tub => tub.encoded_id !== tubId))
       })
   }
