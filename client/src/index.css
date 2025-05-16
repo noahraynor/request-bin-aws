@@ -42,7 +42,7 @@ h2 {
 button {
   border-radius: 8px;
   border: 1px solid white;
-  padding: 0.6em 1.2em;
+  padding: 0.6em;
   margin: 0 5px;
   font-size: 1em;
   font-weight: 500;
@@ -141,7 +141,8 @@ button:focus-visible {
   padding: 1rem;
   border-radius: 4px;
   background-color: #1a1a1a;
-  text-align: center;
+  width: 350px;
+  position: relative;
 }
 
 .newTub {
@@ -152,7 +153,6 @@ button:focus-visible {
   background-color: #1a1a1a;
   align-items: center;
   justify-content: center;
-  text-align: center;
 }
 
 .duck-list {
@@ -163,7 +163,6 @@ button:focus-visible {
 .duck-list li {
   display: flex;
   align-items: center;
-  justify-content: center;
   position: relative;
 }
 
@@ -301,4 +300,31 @@ button:focus-visible {
 
 .delete-button:hover {
   background-color: #990000;
+}
+
+.myTubs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  width: 100%;
+}
+
+.sort-image {
+  height: 17px;
+  background-color: white;
+  border-radius: 4px;
+  padding: 1px;
+}
+
+.sort-container {
+  text-align: right; /* Optional */
+}
+
+.sort-order {
+  margin: 0px;
+}
+
+.sort-container p {
+  cursor: pointer;
 }
