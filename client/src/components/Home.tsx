@@ -5,6 +5,7 @@ import tubService from '../services/tubService'
 import Modal from './Modal'
 import type { ButtonClickHandler, NewTubProps, Tub, MyTubsProps } from '../types'
 import { sortTubs } from '../services/tubUtilities'
+import trashBinIcon from '../assets/trashBin.png'
 
 function NewTub({onClick}: NewTubProps) {
   return (
@@ -28,7 +29,12 @@ function MyTubs({tubs, newestFirst, onToggleSort}: MyTubsProps) {
       </div>
       <div>
         <ul className="duck-list" id="baskets">
-          {tubs.map(tub => <li key={tub.encoded_id} ><Link to={`/tubs/${tub.encoded_id}`}>{tub.encoded_id}</Link></li>)}
+          {tubs.map((tub) => 
+              <li key={tub.encoded_id} >
+                <Link to={`/tubs/${tub.encoded_id}`}>{tub.encoded_id}</Link>
+                <img src={trashBinIcon} class="trash-icon" />
+              </li>)}
+              
         </ul>
       </div>
     </div>
