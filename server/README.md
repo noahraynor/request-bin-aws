@@ -1,3 +1,14 @@
+To Run Server:
+
+.env file needs "NODE_ENV=development"
+--- if its anything else, it will be production mode
+
+Commands to Run: 
+
+npx tsc
+node dist/index.js
+
+
 # Set up PostgreSQL Database
 
 Install postgres on your machine
