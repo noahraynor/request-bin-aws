@@ -10,7 +10,7 @@ app.use('/', router)
 const PORT = 3000;
 const isDev = process.env.NODE_ENV === 'development';
 
-const CLIENT_DIST_PATH = path.join(__dirname, '..', '..', 'client', 'dist');
+const CLIENT_DIST_PATH = isDev ? path.join(__dirname, '..', 'client', 'dist') : path.join(__dirname, '..', '..', 'client', 'dist');
 const CLIENT_INDEX_PATH = path.join(CLIENT_DIST_PATH, 'index.html')
 app.use(express.static(CLIENT_DIST_PATH));
 
