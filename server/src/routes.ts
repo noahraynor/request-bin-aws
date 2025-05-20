@@ -213,4 +213,19 @@ router.all('/receive/:id', async (req: Request, res: Response) => {
   }
 });
 
+router.get('/health/db', async (_req: Request, res: Response) => {
+  try {
+    const mongoPing = await db.command({ ping: 1 });
+    const pgResult = await pool.query('SELECT NOW()');
+
+    res.json({
+      mongo: mongoPing.ok === 1 ? 'connected' : 'error',
+      postgres: pgResult.rows.length ? 'connected' : 'error',
+    });
+  } catch (err) {
+    console.error('DB health check error:', err);
+    res.status(500).json({ error: 'One or both databases failed', details: err });
+  }
+});
+
 export default router
