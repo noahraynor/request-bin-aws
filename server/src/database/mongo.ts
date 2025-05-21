@@ -1,21 +1,58 @@
-// server/src/db/mongo.ts
-import { MongoClient } from 'mongodb';
-import * as dotenv from 'dotenv';
+import { MongoClient, Db } from 'mongodb';
 import path from 'path';
+import {
+  SecretsManagerClient,
+  GetSecretValueCommand,
+} from '@aws-sdk/client-secrets-manager';
+import {
+  SSMClient,
+  GetParametersByPathCommand,
+} from '@aws-sdk/client-ssm';
 
-dotenv.config();
-
-// Construct full connection URI with TLS and retryWrites disabled
-const uri = `${process.env.MONGO_URI}/${process.env.MONGO_DB}?tls=true&retryWrites=false`;
-
-// Load Amazon DocumentDB's TLS CA bundle
+const secretsClient = new SecretsManagerClient({});
+const ssmClient = new SSMClient({});
 const caFilePath = path.resolve('/home/ssm-user/global-bundle.pem');
 
-const client = new MongoClient(uri, {
-  tls: true,
-  tlsCAFile: caFilePath,
-});
+let cachedDb: Promise<Db> | null = null;
 
-const db = client.db(process.env.MONGO_DB);
+async function connectToMongo(): Promise<Db> {
+  // 1. Get secrets
+  const secretRes = await secretsClient.send(
+    new GetSecretValueCommand({ SecretId: 'request-tubs/db-credentials' })
+  );
+  const secrets = JSON.parse(secretRes.SecretString!);
+  const username = secrets.MONGO_USERNAME;
+  const password = secrets.MONGO_PASSWORD;
 
-export { client, db };
+  // 2. Get SSM params
+  const paramRes = await ssmClient.send(
+    new GetParametersByPathCommand({
+      Path: '/request-tubs',
+      WithDecryption: true,
+    })
+  );
+
+  const paramMap = Object.fromEntries(
+    paramRes.Parameters!.map(p => [p.Name!.split('/').pop()!, p.Value])
+  );
+
+  const uri = `${paramMap.MONGO_URI}/${paramMap.MONGO_DB}?tls=true&retryWrites=false`;
+
+  const client = new MongoClient(uri, {
+    auth: { username, password },
+    authMechanism: 'SCRAM-SHA-1',
+    tls: true,
+    tlsCAFile: caFilePath,
+  });
+
+  await client.connect();
+  return client.db(paramMap.MONGO_DB);
+}
+
+
+export const db: Promise<Db> = (async () => {
+  if (!cachedDb) {
+    cachedDb = connectToMongo();
+  }
+  return cachedDb;
+})();
