@@ -6,11 +6,12 @@ import {
   SSMClient,
   GetParametersByPathCommand
 } from '@aws-sdk/client-ssm';
+import type { Config } from '../types';
 
 const secretsClient = new SecretsManagerClient({});
 const ssmClient = new SSMClient({});
 
-export async function loadConfig() {
+export async function loadConfig(): Promise<Config> {
   // Load secrets
   const secretRes = await secretsClient.send(
     new GetSecretValueCommand({ SecretId: 'request-tubs/db-credentials' })
@@ -34,7 +35,11 @@ export async function loadConfig() {
     PGPASSWORD: secrets.PGPASSWORD,
     MONGO_USERNAME: secrets.MONGO_USERNAME,
     MONGO_PASSWORD: secrets.MONGO_PASSWORD,
-    ...params // PGHOST, PGPORT, PGDATABASE, MONGO_URI, MONGO_DB, etc.
+    PGHOST: params.PGHOST!,
+    PGPORT: params.PGPORT!,
+    PGDATABASE: params.PGDATABASE!,
+    MONGO_URI: params.MONGO_URI!,
+    MONGO_DB: params.MONGO_DB!,
   };
 }
 
