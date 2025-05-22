@@ -2,7 +2,6 @@
   "name": "request-bin",
   "version": "1.0.0",
   "description": "Capstone request bin project",
-  "type": "module", 
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -14,7 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/AlexHarnett1/request-bin.git"
   },
-  "author": "Josh",
+  "author": "Alex, Josh, Justin, Noah",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/AlexHarnett1/request-bin/issues"
@@ -33,8 +32,6 @@
     "typescript-eslint": "^8.32.0"
   },
   "dependencies": {
-    "@aws-sdk/client-secrets-manager": "^3.812.0",
-    "@aws-sdk/client-ssm": "^3.812.0",
     "axios": "^1.9.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
