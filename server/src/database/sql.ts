@@ -1,13 +1,14 @@
 import { Pool } from 'pg';
-import { loadConfig } from '../config/config.js';
+import * as dotenv from 'dotenv';
 
-const config = await loadConfig();
+dotenv.config();
+
 const pool = new Pool({
-  host: config.PGHOST,
-  port: Number(config.PGPORT) || 5432,
-  user: config.PGUSER,
-  password: config.PGPASSWORD,
-  database: config.PGDATABASE,
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
 export default pool;

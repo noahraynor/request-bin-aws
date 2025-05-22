@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import pool from './database/sql.js';
+import pool from './database/sql';
 import { QueryResult } from 'pg';
-import { db } from './database/mongo.js';
-import Hashids from 'hashids';
+import { db } from './database/mongo';
+import Hashids = require('hashids');
 import { ObjectId } from 'mongodb';
-import { FrontFacingTub, SQLTubRequest, FrontFacingTubRequest, DeletedRequestRow } from "./types.js";
+import { FrontFacingTub, SQLTubRequest, FrontFacingTubRequest, DeletedRequestRow } from "./types";
 import { DeleteResult } from 'mongodb';
 
 const express = require('express');
@@ -73,7 +73,7 @@ router.get('/api/tubs/:id/requests', async (req: Request, res: Response) => {
 
         const bodyMongoID = new ObjectId(body_id);
 
-        const collection = (await db).collection('bodies');
+        const collection = db.collection('bodies');
         const document = await collection.findOne({ _id: bodyMongoID });
 
         return {
@@ -114,7 +114,7 @@ router.delete('/api/requests/:request_id', async (req: Request, res: Response): 
       console.warn(`Invalid ObjectId: ${body_id}`);
       return res.status(400).json({ error: 'Invalid body_id' });
     }
-    const collection = (await db).collection('bodies');
+    const collection = db.collection('bodies');
     const result2: DeleteResult = await collection.deleteOne({ _id: new ObjectId(body_id) });
     if (result2.deletedCount < 1) {
       console.log('No matching body found. Nothing deleted.');
@@ -197,7 +197,7 @@ router.all('/receive/:id', async (req: Request, res: Response) => {
 
   try {
     // Insert body to MongoDB
-    const collection = (await db).collection('bodies');
+    const collection = db.collection('bodies');
     const mongoResult = await collection.insertOne( { body: req.body } );
     const mongoBodyId = mongoResult.insertedId.toString();
 
@@ -215,7 +215,7 @@ router.all('/receive/:id', async (req: Request, res: Response) => {
 
 router.get('/health/db', async (_req: Request, res: Response) => {
   try {
-    const mongoPing = await (await db).command({ ping: 1 });
+    const mongoPing = await db.command({ ping: 1 });
     const pgResult = await pool.query('SELECT NOW()');
 
     res.json({
@@ -228,4 +228,4 @@ router.get('/health/db', async (_req: Request, res: Response) => {
   }
 });
 
-export default router;
+export default router

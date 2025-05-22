@@ -31,16 +31,4 @@ export interface TubPostRequestBody {
 }
 
 
-export type FrontFacingTub = Omit<Tub, 'id'>;
-
-export type Config = {
-  PGUSER: string;
-  PGPASSWORD: string;
-  PGHOST: string;
-  PGPORT: string;
-  PGDATABASE: string;
-  MONGO_USERNAME: string;
-  MONGO_PASSWORD: string;
-  MONGO_URI: string;
-  MONGO_DB: string;
-};
+export type FrontFacingTub = Omit<Tub, 'id'>

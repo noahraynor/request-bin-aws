@@ -8,7 +8,7 @@
   ],
   "compilerOptions": {
     "target": "ES2020",
-    "module": "esnext",
+    "module": "commonjs",
     "rootDir": "./",
     "outDir": "./dist",
     "strict": true,
