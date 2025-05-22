@@ -2,6 +2,7 @@
   "name": "request-bin",
   "version": "1.0.0",
   "description": "Capstone request bin project",
+  "type": "module", 
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,7 +14,7 @@
     "type": "git",
     "url": "git+https://github.com/AlexHarnett1/request-bin.git"
   },
-  "author": "Alex, Josh, Justin, Noah",
+  "author": "Josh",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/AlexHarnett1/request-bin/issues"

@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import pool from './database/sql';
+import pool from './database/sql.js';
 import { QueryResult } from 'pg';
-import { db } from './database/mongo';
+import { db } from './database/mongo.js';
 import Hashids from 'hashids';
 import { ObjectId } from 'mongodb';
-import { FrontFacingTub, SQLTubRequest, FrontFacingTubRequest, DeletedRequestRow } from "./types";
+import { FrontFacingTub, SQLTubRequest, FrontFacingTubRequest, DeletedRequestRow } from "./types.js";
 import { DeleteResult } from 'mongodb';
 
 const express = require('express');

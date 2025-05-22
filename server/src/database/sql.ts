@@ -1,5 +1,5 @@
 import { Pool } from 'pg';
-import { loadConfig } from '../config/config';
+import { loadConfig } from '../config/config.js';
 
 const config = await loadConfig();
 const pool = new Pool({
