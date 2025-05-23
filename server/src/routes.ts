@@ -228,4 +228,9 @@ router.get('/health/db', async (_req: Request, res: Response) => {
   }
 });
 
+router.get('/api/health', (_req: Request, res: Response) => {
+  res.status(200).send('OK');
+});
+
+
 export default router
